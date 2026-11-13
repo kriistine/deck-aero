@@ -5,7 +5,12 @@ RUN="${XDG_RUNTIME_DIR:-/tmp}/deckaero"
 if [ -f "$RUN/wofi.pid" ] && kill "$(cat "$RUN/wofi.pid")" 2>/dev/null; then rm -f "$RUN/wofi.pid"; exit 0; fi
 C="$RUN/cshare"
 mkdir -p "$C"
-for d in icons themes glib-2.0 fonts; do [ -e "$C/$d" ] || ln -s "/usr/share/$d" "$C/$d"; done
+# container data minus its own app list (those apps aren't on the host), so GTK still
+# finds icons, image loaders (glycin), schemas, mime, fonts
+for d in /usr/share/*; do
+  n=$(basename "$d"); [ "$n" = applications ] && continue
+  [ -e "$C/$n" ] || ln -s "$d" "$C/$n"
+done
 export XDG_DATA_DIRS="/run/host/usr/local/share:/run/host/usr/share:/run/host/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share:$C"
 out="$RUN/wofi.out"
 wofi --show drun -Ddrun-print_command=true > "$out" &

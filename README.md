@@ -2,6 +2,12 @@
 
 My Dark Aero Hyprland desktop, ported to the Steam Deck's Desktop Mode.
 
+![Dark Aero on the Steam Deck: waybar, swaync notification, Nemo and kitty over the wallpaper](screenshots/desktop.png)
+
+![The Steam button opens your wofi launcher](screenshots/launcher.png)
+
+*These are rendered at the Deck's 1280×800 resolution, in a test KDE session running this repo's files.*
+
 It runs your **actual waybar, swaync and wofi configs** on the Deck's KDE desktop, instead of a Plasma panel made to look similar. They run inside a distrobox container, so SteamOS updates don't wipe them.
 
 | Piece | On the Deck |
