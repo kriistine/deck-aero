@@ -1,0 +1,413 @@
+/**
+ * @name Dark Aero Hyprland (Theme Match - V14 - Final)
+ * @author Kris
+ * @version 1.0.9
+ * @description Custom translucent Dark Aero theme that perfectly matches Nemo and Xarchiver styling.
+ */
+
+/* =========================================================
+   1. CORE COLOR & PANEL DENSITY VARIABLES
+   ========================================================= */
+/* Declared across root and theme classes so Discord's built-in themes cannot override them */
+:root,
+.theme-dark,
+.theme-light,
+[class*="theme-"] {
+    /* Exact Nemo Blue Accent (#3daee9) globally mapped across all of Discord's brand colors */
+    --brand-experiment: #3daee9 !important;
+    --brand-experiment-500: #3daee9 !important;
+    --brand-experiment-560: #4bbbeb !important;
+    --brand-experiment-600: #3daee9 !important;
+    --brand-experiment-30a: rgba(61, 174, 233, 0.3) !important;
+    --text-link: #3daee9 !important;
+
+    /* Modern 2026 Non-Experiment "Brand" variables */
+    --brand-100: #d6effc !important;
+    --brand-200: #addff9 !important;
+    --brand-300: #85cef6 !important;
+    --brand-400: #5cbdf3 !important;
+    --brand-500: #3daee9 !important; /* Main Blue */
+    --brand-560: #3daee9 !important;
+    --brand-600: #2993cb !important;
+    --brand-700: #1d6b94 !important;
+    --brand-800: #12435c !important;
+    --brand-900: #061b25 !important;
+
+    /* HSL color calculations (201, 82%, 58% is your blue in HSL) */
+    --brand-500-hsl: 201, 82%, 58% !important;
+    --brand-560-hsl: 201, 82%, 58% !important;
+    --brand-600-hsl: 201, 82%, 58% !important;
+
+    /* TRANSLUCENCE THEME CUSTOM VARIABLES
+       (Overrides Translucence's entire internal accent color calculation engine!) */
+    --accent-hue: 201 !important;
+    --accent-saturation: 82% !important;
+    --accent-lightness: 58% !important;
+    --unread-color: #3daee9 !important;
+    --unread-background: #3daee9 !important;
+    --danger-color: #3daee9 !important;
+
+    /* Map all red/danger colors (notifications, mute slashes, unreads) to your custom blue accent */
+    --status-danger: #3daee9 !important;
+    --status-danger-background: #3daee9 !important;
+    --text-danger: #3daee9 !important;
+    --button-danger-background: #3daee9 !important;
+    --info-danger-foreground: #3daee9 !important;
+    --info-danger-background: rgba(61, 174, 233, 0.1) !important;
+    --status-danger-hsl: 201, 82%, 58% !important;
+
+    /* Red color palette overrides */
+    --red-330: #3daee9 !important;
+    --red-360: #3daee9 !important;
+    --red-400: #3daee9 !important;
+    --red-430: #3daee9 !important;
+    --red-500: #3daee9 !important;
+    --red-530: #3daee9 !important;
+    --red-560: #4bbbeb !important;
+    --red-600: #3daee9 !important;
+
+    --red-330-hsl: 201, 82%, 58% !important;
+    --red-360-hsl: 201, 82%, 58% !important;
+    --red-400-hsl: 201, 82%, 58% !important;
+    --red-430-hsl: 201, 82%, 58% !important;
+    --red-500-hsl: 201, 82%, 58% !important;
+    --red-530-hsl: 201, 82%, 58% !important;
+    --red-560-hsl: 201, 82%, 58% !important;
+    --red-600-hsl: 201, 82%, 58% !important;
+
+    /* Opacity variations of the brand color (controls your own reactions and selections) */
+    --brand-experiment-10a: rgba(61, 174, 233, 0.1) !important;
+    --brand-experiment-15a: rgba(61, 174, 233, 0.15) !important;
+    --brand-experiment-20a: rgba(61, 174, 233, 0.2) !important;
+    --brand-experiment-30a: rgba(61, 174, 233, 0.3) !important;
+    --brand-experiment-40a: rgba(61, 174, 233, 0.4) !important;
+
+    /* Nemo Density Mapping:
+       Nemo Window Base:  rgba(15, 15, 15, 0.55)
+       Nemo Main View:    rgba(15, 15, 15, 0.35)
+       Nemo Sidebar:      rgba(5, 5, 5, 0.45)
+    */
+    --background-primary: rgba(15, 15, 15, 0.35) !important;         /* Main Chat (Nemo View) */
+    --background-secondary: rgba(5, 5, 5, 0.45) !important;          /* Sidebar (Nemo Sidebar) */
+    --background-secondary-alt: rgba(5, 5, 5, 0.45) !important;      /* User profile block */
+    --background-tertiary: rgba(5, 5, 5, 0.45) !important;           /* Servers list */
+    --background-floating: rgba(15, 15, 15, 0.55) !important;         /* Popups/Settings (Nemo Window) */
+    --home-background: transparent !important;
+
+    /* Modern VARIABLES (For the New Desktop Visual Refresh!) */
+    --bg-base-primary: rgba(15, 15, 15, 0.35) !important;            /* Chat Background (Nemo View) */
+    --bg-base-secondary: rgba(5, 5, 5, 0.45) !important;             /* Sidebar Background (Nemo Sidebar) */
+    --bg-base-tertiary: rgba(5, 5, 5, 0.45) !important;              /* Servers list Background */
+    
+    --bg-surface-primary: rgba(15, 15, 15, 0.35) !important;         /* Central Chat Panel */
+    --bg-surface-secondary: rgba(5, 5, 5, 0.45) !important;           /* Channel/Sidebar list */
+    --bg-surface-tertiary: rgba(5, 5, 5, 0.45) !important;            /* Server Sidebar list */
+    --bg-surface-overlay: rgba(15, 15, 15, 0.55) !important;          /* Floating settings / Context menus */
+}
+
+/* =========================================================
+   2. BASE WINDOW & CHAT BACKGROUND TRANSPARENCY
+   ========================================================= */
+#app-mount {
+    background-color: rgba(15, 15, 15, 0.55) !important;
+    background-image: none !important;
+}
+
+/* Strip solid background colors from structural wrappers so our panel variables show.
+   We put "container_" back in so your vertical divider gaps remain transparent and blurred! */
+div[class*="app_"],
+div[class*="bg_"],
+div[class*="container_"],
+body, html {
+    background-color: transparent !important;
+    background: transparent !important;
+    background-image: none !important;
+}
+
+/* Force the main chat scroller and message area to be transparent so the window background shows */
+[class*="chat_"],
+[class*="chatContent_"],
+[class*="scrollerInner_"],
+[class*="scroller_"],
+[class*="messagesWrapper_"] {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+/* =========================================================
+   3. CLEAN FLAT SIDEBAR LIST (Matches Nemo Sidebar exactly!)
+   ========================================================= */
+/* Flattens everything in the sidebar (Friends, Nitro, Shop, Quests, AND all DMs) */
+[class*="privateChannels_"] [class*="interactive_"] {
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    
+    /* Compact, clean proportions matching Nemo's list density */
+    height: 34px !important; 
+    padding: 0px 8px !important; 
+    margin-bottom: 2px !important; 
+    display: flex !important;
+    align-items: center !important;
+    
+    transition: background-color 0.15s ease !important;
+}
+
+/* Subtle flat hover effect - matching Nemo Sidebar folder hover */
+[class*="privateChannels_"] [class*="interactive_"]:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+
+/* Selected Channel / Active Category - Flat Nemo-blue highlight selection */
+[class*="privateChannels_"] [class*="selected_"] [class*="interactive_"],
+[class*="privateChannels_"] [class*="interactive_"][class*="selected_"] {
+    background-color: #3daee9 !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   4. HEADERBAR & TOP ICON BUTTONS (Matches Nemo Header Buttons)
+   ========================================================= */
+/* The main top horizontal bar */
+[class*="titleBar"],
+[class*="title_"],
+[class*="searchBar_"] {
+    background-image: linear-gradient(to bottom, rgba(70, 70, 70, 0.8) 0%, rgba(43, 43, 43, 0.8) 49%, rgba(0, 0, 0, 0.8) 50%, rgba(17, 17, 17, 0.8) 100%) !important;
+    background-color: transparent !important;
+    border-bottom: 1px solid #000000 !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Make top-right utility icons (call, video, pins, etc.) look like actual buttons */
+[class*="toolbar_"] [class*="clickable_"] {
+    background-color: transparent !important;
+    background-image: linear-gradient(to bottom, #4a4a4a 0%, #2b2b2b 49%, #000000 50%, #111111 100%) !important;
+    border: 1px solid #000000 !important;
+    border-radius: 6px !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0,0,0,0.5) !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+[class*="toolbar_"] [class*="clickable_"]:hover {
+    background-image: linear-gradient(to bottom, #666666 0%, #444444 49%, #1a1a1a 50%, #2b2b2b 100%) !important;
+}
+
+[class*="toolbar_"] [class*="clickable_"]:active {
+    background-image: linear-gradient(to bottom, #000000 0%, #151515 100%) !important;
+}
+
+/* =========================================================
+   5. MESSAGE INPUT BAR (Matches Nemo Statusbar / Space Notifier)
+   ========================================================= */
+/* The main long message bar container */
+[class*="channelTextArea_"],
+[class*="inner_"] {
+    background-color: transparent !important;
+    background-image: linear-gradient(to bottom, #222222 0%, #000000 100%) !important;
+    border: 1px solid #000000 !important;
+    border-radius: 6px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 3px rgba(0,0,0,0.5) !important;
+    padding: 4px 6px !important;
+}
+
+/* Style plus button and utility buttons inside chat box */
+[class*="attachButton_"],
+[class*="buttons_"] button,
+[class*="buttons_"] [class*="button_"] {
+    background-color: transparent !important;
+    background-image: linear-gradient(to bottom, #4a4a4a 0%, #2b2b2b 49%, #000000 50%, #111111 100%) !important;
+    border: 1px solid #000000 !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0,0,0,0.5) !important;
+    margin: 2px 4px !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+[class*="attachButton_"]:hover,
+[class*="buttons_"] button:hover,
+[class*="buttons_"] [class*="button_"]:hover {
+    background-image: linear-gradient(to bottom, #666666 0%, #444444 49%, #1a1a1a 50%, #2b2b2b 100%) !important;
+}
+
+[class*="attachButton_"]:active,
+[class*="buttons_"] button:active,
+[class*="buttons_"] [class*="button_"]:active {
+    background-image: linear-gradient(to bottom, #000000 0%, #151515 100%) !important;
+}
+
+/* =========================================================
+   6. STANDARD DIALOG ACTION BUTTONS (Matches Nemo Buttons)
+   ========================================================= */
+button[class*="button_"]:not([class*="lookLink_"]):not([class*="attachButton_"]),
+button[class*="lookFilled_"] {
+    background-color: transparent !important;
+    background-image: linear-gradient(to bottom, #4a4a4a 0%, #2b2b2b 49%, #000000 50%, #111111 100%) !important;
+    border: 1px solid #000000 !important;
+    border-radius: 6px !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0,0,0,0.5) !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8) !important;
+    color: #ffffff !important;
+}
+
+button[class*="button_"]:not([class*="lookLink_"]):not([class*="attachButton_"]):hover,
+button[class*="lookFilled_"]:hover {
+    background-image: linear-gradient(to bottom, #666666 0%, #444444 49%, #1a1a1a 50%, #2b2b2b 100%) !important;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+button[class*="button_"]:not([class*="lookLink_"]):not([class*="attachButton_"]):active,
+button[class*="lookFilled_"]:active {
+    background-image: linear-gradient(to bottom, #000000 0%, #151515 100%) !important;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(0,0,0,1) !important;
+    border: 1px solid #000000 !important;
+    color: #cccccc !important;
+}
+
+/* =========================================================
+   7. SCROLLBARS (Matches Nemo/Xarchiver Scrollbars)
+   ========================================================= */
+::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 3px !important;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.35) !important;
+}
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* =========================================================
+   8. CHAT SEARCH FIELD (Exact Nemo Address Bar Mapping)
+   ========================================================= */
+[class*="search_"] [class*="searchBar_"] {
+    background-color: #1a1a1a !important;
+    background-image: linear-gradient(to bottom, #000000 0%, #222222 100%) !important;
+    border: 1px solid #000000 !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.1) !important;
+    padding: 0 8px !important;
+    height: 24px !important;
+}
+
+[class*="search_"] [class*="searchBar_"] input,
+[class*="search_"] [class*="searchBar_"] [class*="draft_"] {
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   9. INTERCEPT HARDCODED RED/DANGER SVG VECTORS & LABELS
+   ========================================================= */
+/* Force all hardcoded red/danger SVG strokes and fills to match your blue
+   (This handles hex codes, standard RGB structures, and path definitions) */
+svg path[fill="#f23f43"], svg path[fill="#ed4245"], svg [fill="#f23f43"], svg [fill="#ed4245"],
+svg path[fill="#ff3333"], svg [fill="#ff3333"], svg path[fill="#d83c3e"], svg [fill="#d83c3e"],
+svg path[fill*="242, 63"], svg path[fill*="237, 66"], svg [fill*="242, 63"], svg [fill*="237, 66"] {
+    fill: #3daee9 !important;
+}
+svg path[stroke="#f23f43"], svg path[stroke="#ed4245"], svg [stroke="#f23f43"], svg [stroke="#ed4245"],
+svg path[stroke="#ff3333"], svg [stroke="#ff3333"], svg path[stroke="#d83c3e"], svg [stroke="#d83c3e"],
+svg path[stroke*="242, 63"], svg path[stroke*="237, 66"], svg [stroke*="242, 63"], svg [stroke*="237, 66"] {
+    stroke: #3daee9 !important;
+}
+
+/* Force unread lines, unread channel notification pills, and that tiny red cap on the end */
+[class*="isUnread_"] {
+    border-color: #3daee9 !important;
+}
+[class*="unreadPill_"] {
+    background-color: #3daee9 !important;
+    color: #ffffff !important;
+}
+[class*="unreadPillCap_"],
+[class*="unreadPillCapStroke_"],
+[class*="newMessagesBar_"],
+[class*="divider_"][class*="isUnread_"] {
+    --divider-color: #3daee9 !important;
+    --divider-unread: #3daee9 !important;
+    --divider-unread-color: #3daee9 !important;
+    border-color: #3daee9 !important;
+}
+
+/* Ultra-specific chained selector to force the unread line "NEW" text pill to use your blue */
+[class*="divider_"][class*="isUnread_"] [class*="unreadPill_"],
+div[class*="divider_"][class*="isUnread_"] span[class*="unreadPill_"],
+span[class*="unreadPill_"] {
+    background-color: #3daee9 !important;
+    background: #3daee9 !important;
+    color: #ffffff !important;
+}
+
+[class*="unreadPillCap_"],
+[class*="unreadPillCapStroke_"],
+[class*="divider_"][class*="isUnread_"] [class*="unreadPillCap_"] * {
+    fill: #3daee9 !important;
+    stroke: #3daee9 !important;
+    color: #3daee9 !important;
+    background-color: #3daee9 !important;
+}
+
+/* Force top "New Messages" banner to match your custom blue */
+[class*="newMessagesBar_"] {
+    background-color: #3daee9 !important;
+    background: #3daee9 !important;
+}
+[class*="newMessagesBar_"] button {
+    color: #ffffff !important;
+}
+
+/* Force unread badge counts (server sidebar badges) to use your custom blue */
+[class*="mentionCount_"],
+[class*="badge_"],
+[class*="lowerBadge_"] [class*="badge_"],
+[class*="lowerBadge_"] *,
+[class*="upperBadge_"] *,
+[class*="numberBadge_"],
+[class*="textBadge_"],
+[class*="iconBadge_"],
+[class*="unreadMentionsIndicator_"] {
+    background-color: #3daee9 !important;
+    background: #3daee9 !important;
+    color: #ffffff !important;
+}
+
+/* Style selected/clicked reactions to match your Aero Blue accent */
+[class*="reactionMe_"],
+[class*="reaction_"][class*="reactionMe_"] {
+    background-color: rgba(61, 174, 233, 0.15) !important;
+    border-color: #3daee9 !important;
+}
+[class*="reactionMe_"] [class*="reactionCount_"] {
+    color: #3daee9 !important;
+}
+
+/* Force red slashes (mic mute, deafen) to use your custom blue */
+[class*="strikethrough_"],
+[class*="strikethrough_"] *,
+[class*="strikethrough_"] path,
+svg[class*="strikethrough_"] path {
+    color: #3daee9 !important;
+    fill: #3daee9 !important;
+    stroke: #3daee9 !important;
+}

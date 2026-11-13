@@ -1,0 +1,285 @@
+/* ==UserStyle==
+@name         Roblox Aero
+@namespace    local.kris
+@version      2.0.0
+@description  Dark Aero theme, transparent to the desktop (no embedded wallpaper)
+@license      MIT
+==/UserStyle== */
+@-moz-document domain("roblox.com") {
+    /* =========================================================================
+       1. GLOBAL STRUCTURE (see-through: Firefox is transparent, Hyprland blurs
+          the real desktop behind it, same tint as the Discord theme)
+       ========================================================================= */
+    html, html[dark], html[data-theme="dark"] {
+        background: rgba(15, 15, 15, 0.55) !important;
+        background-image: none !important;
+        color-scheme: dark !important;
+    }
+    body, .dark-theme, html[data-theme="dark"] body, #wrap, #container-main {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+    }
+    body { color: #fff !important; }
+    /* =========================================================================
+       3. TOP HEADER NAVBAR (Glossy)
+       ========================================================================= */
+    #header, 
+    .rbx-header,
+    nav[class*="navbar" i], 
+    .navbar.fixed-top {
+        background: linear-gradient(to bottom, rgba(60,60,60,0.85) 0%, rgba(30,30,30,0.9) 45%, rgba(0,0,0,0.95) 50%, rgba(10,10,10,0.95) 100%) !important;
+        border-bottom: 1px solid #000 !important; 
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+        border-radius: 0 !important;
+        color: #fff !important;
+    }
+    /* =========================================================================
+       4. TRANSPARENT OUTER LAYOUT WRAPPERS (Unlocks the background!)
+       ========================================================================= */
+    .container-main, 
+    .content,
+    #container-main,
+    .main-layout,
+    .js-body-container {
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+    /* =========================================================================
+       5. TRANSLUCENT GLASS PANES (Floating over your blurred wallpaper)
+       ========================================================================= */
+    .section-content, 
+    .card-item, 
+    .friend-row-container, 
+    .grid-item-card,
+    .section,
+    .popover,
+    .modal-dialog,
+    .modal-content {
+        /* Low opacity since the background image underneath is already blurred */
+        background: rgba(15, 15, 20, 0.5) !important;
+        
+        /* Crisp 3D border edge and soft drop shadow */
+        border: 1px solid rgba(255, 255, 255, 0.1) !important; 
+        box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.1), 
+                    0 8px 32px rgba(0, 0, 0, 0.5) !important;
+        border-radius: 8px !important; 
+        color: #fff !important;
+    }
+    /* Clear flat card backgrounds so they don't block the transparency underneath */
+    .game-card-info, 
+    .item-card-info,
+    .section-content-info {
+        background: transparent !important;
+    }
+    /* Text Styling for Main Body Cards */
+    .container-main h1, .container-main h2, .container-main h3, .container-main h4, 
+    .container-main p, .container-main span, .container-main a, .container-main label,
+    .game-card-name, .friend-name, .friends-title, .see-all-link {
+        color: #fff !important; 
+        text-shadow: 1px 1px 2px #000, 0px 0px 4px #000 !important; 
+        font-family: 'Segoe UI', Tahoma, sans-serif !important;
+    }
+    /* =========================================================================
+       6. GENERAL GLOSSY CONTROLS & BUTTONS (Search Inputs, Play Buttons)
+       ========================================================================= */
+    input[type="text"], 
+    select, 
+    .navbar-search, 
+    #navbar-search-input,
+    button, 
+    button[class*="button" i], 
+    button[class*="btn" i], 
+    a[class*="buttons_legacyButton" i],
+    .btn-primary-lg, 
+    .btn-primary-md,
+    .btn-common-play-game-lg, 
+    .play-button {
+        background: linear-gradient(to bottom, #555555 0%, #222222 49%, #000000 50%, #111111 100%) !important; 
+        border: 1px solid #000 !important;
+        box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.5) !important; 
+        color: #fff !important;
+        border-radius: 6px !important; 
+        text-shadow: 0 1px 1px #000 !important; 
+        transition: all 0.1s ease !important; 
+        opacity: 1 !important;
+    }
+    button:hover, 
+    button[class*="button" i]:hover, 
+    button[class*="btn" i]:hover, 
+    a[class*="buttons_legacyButton" i]:hover,
+    .btn-primary-lg:hover, 
+    .btn-primary-md:hover,
+    .play-button:hover {
+        background: linear-gradient(to bottom, #666666 0%, #333333 49%, #000000 50%, #1a1a1a 100%) !important; 
+        box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.5), 0 2px 6px rgba(0, 0, 0, 0.8) !important; 
+        cursor: pointer !important;
+    }
+    /* Game Cards Glossy Hover Transition */
+    .game-card-container:hover {
+        background: linear-gradient(to bottom, #555555 0%, #222222 49%, #000000 50%, #111111 100%) !important; 
+        box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.5), 0 6px 12px rgba(0, 0, 0, 0.9) !important;
+        transform: translateY(-2px); 
+        cursor: pointer !important;
+        border-radius: 6px !important;
+    }
+    /* Classic Solid Green/Red Gloss buttons (Robux purchases or notifications) */
+    div[class*="solidGreen" i], .btn-to-robux { 
+        background: linear-gradient(to bottom, #43d854 0%, #1b8c28 100%) !important; 
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5) !important; 
+    }
+    div[class*="solidRed" i] { 
+        background: linear-gradient(to bottom, #ff4d4d 0%, #b31010 100%) !important; 
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5) !important; 
+    }
+    /* Options and Tables alignment */
+    option { 
+        background: #111 !important; 
+        color: #fff !important; 
+    }
+    table[class*="table" i], th[class*="tableHeadLabel" i], td[class*="td" i] { 
+        background: transparent !important; 
+        color: #fff !important; 
+        border-color: rgba(255, 255, 255, 0.1) !important; 
+    }
+    thead[class*="tableHead" i] { 
+        background: rgba(0,0,0,0.6) !important; 
+        box-shadow: inset 0 1px 0px rgba(255,255,255,0.1); 
+    }
+    /* =========================================================================
+       6. FLAT SIDEBAR FRAME (Matte Black)
+       ========================================================================= */
+    #navigation, 
+    .left-col-container,
+    .navigation,
+    .left-nav,
+    .rbx-left-col {
+        background: #111112 !important; /* Flat matte background */
+        backdrop-filter: none !important; 
+        -webkit-backdrop-filter: none !important;
+        border-right: 1px solid #1e1e20 !important; /* Flat vertical split border */
+        border-top: none !important;
+        border-left: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        border-radius: 0px !important; 
+    }
+    /* Reset Sidebar List Container Padding and Margins */
+    .left-col-list,
+    .left-col-list li, 
+    .rbx-left-col li,
+    .left-nav-item {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: unset !important;
+        height: auto !important;
+        border-radius: 0px !important;
+    }
+    /* Flat Sidebar Link Rows */
+    .left-col-list li a, 
+    .left-col-list li button,
+    .rbx-left-col li a,
+    .rbx-left-col li button,
+    .left-nav-item a,
+    .left-nav-item button,
+    .left-col-list li a[class*="button" i],
+    .left-col-list li a[class*="btn" i],
+    .left-col-list li a[class*="legacyButton" i],
+    .left-col-list li button[class*="button" i],
+    .left-col-list li button[class*="btn" i],
+    #rplus-menu,
+    .rplus-button,
+    a[href*="roblox.plus"] {
+        background: transparent !important; 
+        border: none !important;
+        box-shadow: none !important; 
+        color: #fff !important;
+        border-radius: 0px !important; 
+        text-shadow: none !important; /* Clean flat text */
+        height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 4px 16px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+    /* Clean Hover State for both <a> and <button> inside the sidebar */
+    .left-col-list li a:hover, 
+    .left-col-list li button:hover,
+    .rbx-left-col li a:hover,
+    .rbx-left-col li button:hover,
+    .left-nav-item a:hover,
+    .left-nav-item button:hover,
+    .left-col-list li a[class*="button" i]:hover,
+    .left-col-list li a[class*="btn" i]:hover,
+    .left-col-list li a[class*="legacyButton" i]:hover,
+    .left-col-list li button[class*="button" i]:hover,
+    .left-col-list li button[class*="btn" i]:hover,
+    #rplus-menu:hover,
+    .rplus-button:hover,
+    a[href*="roblox.plus"]:hover {
+        background: rgba(255, 255, 255, 0.08) !important; 
+        border: none !important;
+        box-shadow: none !important; 
+        border-radius: 0px !important;
+    }
+    /* =========================================================================
+       7. ACTIVE SIDEBAR HIGHLIGHT (Driven by the Tampermonkey script!)
+       ========================================================================= */
+    .left-col-list li.active-tab,
+    .left-col-list li.active-tab a,
+    .left-col-list li.active-tab button,
+    .left-col-list li a.active-tab,
+    .left-col-list li button.active-tab,
+    .left-nav-item.active-tab a,
+    .left-nav-item.active-tab button,
+    .rbx-left-col li.active-tab a,
+    .rbx-left-col li.active-tab button,
+    .active-tab {
+        background: #359cf4 !important; /* Electric cyan selection block */
+        color: #ffffff !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0px !important;
+    }
+    /* Ensure active text and icons stay white inside the active button block */
+    .left-col-list li.active-tab a span,
+    .left-col-list li.active-tab button span,
+    .active-tab span,
+    .left-col-list li.active-tab a div span {
+        color: #ffffff !important;
+        text-shadow: none !important;
+    }
+    /* Tighten spacing between sidebar icons and text */
+    .left-col-list li a span[class^="icon"],
+    .rbx-left-col li a span[class^="icon"],
+    .left-nav-item a span,
+    .left-col-list li button span {
+        margin-right: 8px !important;
+        transform: scale(0.95) !important;
+    }
+    /* Prevent Text Truncation in Sidebar */
+    .left-col-list li a .font-header-2,
+    .rbx-left-col li a .font-header-2,
+    .left-nav-item a .font-header-2,
+    .dynamic-ellipsis-item {
+        overflow: visible !important;
+        text-overflow: unset !important;
+        white-space: nowrap !important;
+    }
+    /* Clean, thin dark grey category split lines */
+    .left-col-list .divider,
+    div[class*="separator" i] {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        margin: 8px 0 !important;
+    }
+}

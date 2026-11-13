@@ -1,0 +1,16 @@
+#!/bin/bash
+# wofi app launcher (your $menu), running in the container but listing + launching HOST apps.
+RUN="${XDG_RUNTIME_DIR:-/tmp}/deckaero"
+# toggle: a second click closes our open launcher
+if [ -f "$RUN/wofi.pid" ] && kill "$(cat "$RUN/wofi.pid")" 2>/dev/null; then rm -f "$RUN/wofi.pid"; exit 0; fi
+C="$RUN/cshare"
+mkdir -p "$C"
+for d in icons themes glib-2.0 fonts; do [ -e "$C/$d" ] || ln -s "/usr/share/$d" "$C/$d"; done
+export XDG_DATA_DIRS="/run/host/usr/local/share:/run/host/usr/share:/run/host/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share:$C"
+out="$RUN/wofi.out"
+wofi --show drun -Ddrun-print_command=true > "$out" &
+echo $! > "$RUN/wofi.pid"; wait $! || { rm -f "$RUN/wofi.pid"; exit 0; }
+rm -f "$RUN/wofi.pid"; cmd=$(cat "$out")
+cmd=$(printf '%s' "$cmd" | sed -E 's/ ?%[fFuUdDnNickvm]//g')
+[ -n "$cmd" ] || exit 0
+setsid distrobox-host-exec sh -c "$cmd" >/dev/null 2>&1 &

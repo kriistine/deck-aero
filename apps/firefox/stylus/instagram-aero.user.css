@@ -1,0 +1,534 @@
+/* ==UserStyle==
+@name         Instagram Aero
+@namespace    local.kris
+@version      3.9.0
+@description  Port of the Dark Aero Hyprland Discord theme to Instagram
+@license      MIT
+==/UserStyle== */
+
+@-moz-document domain("instagram.com") {
+/* =========================================================================
+       Instagram Aero - port of the "Dark Aero Hyprland" Discord theme
+       (Vencord QuickCSS), which matches Nemo / Xarchiver styling.
+       Instagram uses hashed class names that change constantly, so this
+       theme recolours Instagram's own CSS variables and targets elements
+       by role / aria-label instead.
+       ========================================================================= */
+
+    /* =========================================================================
+       1. COLOUR VARIABLES (Instagram reads every colour from these)
+       Instagram stores them as bare "R, G, B" numbers and wraps them in
+       rgb(var(--x)), so values here must be numbers, not #hex.
+       ========================================================================= */
+    :root, html, body,
+    .__fb-light-mode, .__fb-dark-mode,
+    .__ig-light-mode, .__ig-dark-mode {
+        color-scheme: dark !important;
+
+        /* Page surfaces: fully transparent so the wallpaper shows through */
+        --ig-primary-background: 0, 0, 0, 0 !important;
+
+        /* Cards, inputs, hover states */
+        --ig-secondary-background: 255, 255, 255, .06 !important;
+        --ig-highlight-background: 255, 255, 255, .1 !important;
+        --ig-hover-overlay: 255, 255, 255, .1 !important;
+
+        /* Popups, menus, modals (Nemo window base, made solid enough to read) */
+        --ig-elevated-background: 15, 15, 15 !important;
+        --ig-secondary-elevated-background: 26, 26, 26 !important;
+
+        /* Text and icons */
+        --ig-primary-text: 255, 255, 255 !important;
+        --ig-secondary-text: 170, 170, 170 !important;
+        --ig-primary-icon: 255, 255, 255 !important;
+        --ig-secondary-icon: 170, 170, 170 !important;
+
+        /* Borders */
+        --ig-separator: 0, 0, 0 !important;
+        --ig-elevated-separator: 0, 0, 0 !important;
+        --ig-stroke: 0, 0, 0 !important;
+
+        /* Nemo blue accent (#3daee9) */
+        --ig-primary-button: 61, 174, 233 !important;
+        --ig-primary-button-hover: 41, 147, 203 !important;
+        --ig-link: 92, 189, 243 !important;
+        --ig-badge: 61, 174, 233 !important;
+
+        /* DM chat colours (these take full colour values) */
+        --igd-thread-background-color: transparent !important;
+        --igd-header-background-color: transparent !important;
+        --igd-composer-background-color: transparent !important;
+        --igd-composer-input-background-color: transparent !important;
+        --chat-composer-background-color: transparent !important;
+        --chat-composer-input-background-color: transparent !important;
+        --igd-composer-border-color: #000 !important;
+        --chat-incoming-message-bubble-background-color: rgba(15, 15, 15, 0.55) !important;
+        --chat-incoming-message-border-color: rgba(0, 0, 0, 0.6) !important;
+        --chat-incoming-message-border-width: 1px !important;
+        --chat-outgoing-message-bubble-background-color: #3daee9 !important;
+        --chat-outgoing-message-background-gradient: linear-gradient(#3daee9, #3daee9) !important;
+        --chat-message-text-color: #fff !important;
+        --chat-incoming-message-text-color: #fff !important;
+        --chat-scrollbar-thumb-color: rgba(255, 255, 255, 0.2) !important;
+        --chat-scrollbar-track-color: rgba(0, 0, 0, 0.2) !important;
+
+        /* Discord theme panel colours (exact values from the QuickCSS) */
+        /* Discord's DM list and server list measure pure black on screen */
+        --aero-sidebar-bg: #000;                    /* DM list (Nemo sidebar)  */
+        --aero-rail-bg: #000;                       /* icon rail (server list) */
+        --aero-card-bg: rgba(15, 15, 15, 0.55);     /* posts / cards           */
+
+        /* Headerbar gloss (Discord titleBar) */
+        --aero-gloss: linear-gradient(to bottom, rgba(70, 70, 70, 0.8) 0%, rgba(43, 43, 43, 0.8) 49%, rgba(0, 0, 0, 0.8) 50%, rgba(17, 17, 17, 0.8) 100%);
+        /* Glossy button (Discord toolbar / Nemo buttons) */
+        --aero-button: linear-gradient(to bottom, #4a4a4a 0%, #2b2b2b 49%, #000000 50%, #111111 100%);
+        --aero-button-hover: linear-gradient(to bottom, #666666 0%, #444444 49%, #1a1a1a 50%, #2b2b2b 100%);
+        --aero-button-active: linear-gradient(to bottom, #000000 0%, #151515 100%);
+
+        /* Height of the strip across the top of the DM page: the chat
+           header slimmed to 8 + 44 + 8 + 1px Instagram border */
+        --aero-strip: 61px;
+        /* One continuous headerbar across rail, chat list and chat header:
+           same gloss on the same black base everywhere, so the three pieces
+           can't come out different shades */
+        --aero-strip-bg:
+            linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)) 0 0 / 100% 1px no-repeat,
+            linear-gradient(#000, #000) 0 calc(var(--aero-strip) - 1px) / 100% 1px no-repeat,
+            var(--aero-gloss) 0 0 / 100% var(--aero-strip) no-repeat,
+            linear-gradient(#000, #000) 0 0 / 100% var(--aero-strip) no-repeat;
+        /* Vertical divider that starts under the strip, so the bar has no seams */
+        --aero-divider: linear-gradient(#000, #000) right 0 top var(--aero-strip) / 1px 100% no-repeat;
+    }
+
+    /* =========================================================================
+       2. GLOBAL STRUCTURE (Transparent so the wallpaper layer shows)
+       ========================================================================= */
+    /* The page is see-through: with Firefox's transparent window
+       (user.js + userChrome.css) Hyprland's blur shows the real desktop,
+       exactly like the Discord window. This is Discord's #app-mount tint
+       (Nemo window base). */
+    html {
+        background: rgba(15, 15, 15, 0.55) !important;
+        background-image: none !important;
+    }
+    body {
+        background: transparent !important;
+        background-image: none !important;
+        color: #fff !important;
+    }
+
+
+    /* =========================================================================
+       4. ICON RAIL (Discord server list)
+       The rail is "whatever holds the Explore link but isn't the page";
+       the visible rail box is the one Instagram sizes with an inline width.
+       Layout: rail box > column > [logo, links > 7 items, Settings/More]
+       ========================================================================= */
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] {
+        background: var(--aero-strip-bg), var(--aero-divider), var(--aero-rail-bg) !important;
+        border-right: none !important;
+    }
+    /* Stay an icon-only strip: Instagram widens the rail on hover by
+       rewriting its inline width and un-hiding the labels */
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] {
+        width: 72px !important;
+        min-width: 72px !important;
+        max-width: 72px !important;
+        transition: none !important;
+    }
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] div[style*="translateX"] {
+        display: none !important;
+    }
+    /* Logo (48px) sits centred inside the headerbar strip, top left */
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div {
+        padding-top: calc((var(--aero-strip) - 48px) / 2) !important;
+    }
+    /* Stack the links under the logo like Discord's server list (Instagram
+       centres them vertically with align-content, leaving a big gap) */
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:nth-child(2) > div {
+        align-content: flex-start !important;
+        /* first icon starts 12px below the strip */
+        padding-top: calc((var(--aero-strip) - 48px) / 2 + 12px) !important;
+    }
+    /* Not needed on PC: More/Also from Meta group, Create and Home */
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:nth-child(3),
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:nth-child(2) > div > div:has(svg[aria-label="New post"]),
+    /* Home does the same as the Instagram logo */
+    div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:nth-child(2) > div > div:has(a[href="/"]) {
+        display: none !important;
+    }
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) a *,
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) [role="button"] * {
+        background-color: transparent !important;
+    }
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) a,
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) [role="button"] {
+        border-radius: 4px !important;
+        box-shadow: none !important;
+    }
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) a:hover,
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) [role="button"]:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+    }
+    /* Keep profile picture round */
+    div:not(main div):has(a[href="/explore/"]):not(:has(main)) img {
+        border-radius: 50% !important;
+    }
+
+    /* =========================================================================
+       5. DM CHAT LIST (Discord DM sidebar)
+       Its top band carries the headerbar gloss so the strip runs straight
+       across into the chat header.
+       ========================================================================= */
+    div[role="navigation"][aria-label="Thread list"] {
+        background: var(--aero-strip-bg), var(--aero-divider), var(--aero-sidebar-bg) !important;
+        border-right: none !important;
+        box-shadow: none !important;
+
+        /* Slimmer, closer to Discord's DM list (Instagram: clamp(320px, 33vw, 400px)) */
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
+        flex-shrink: 0 !important;
+
+        /* Instagram paints the open chat's row with its highlight colour
+           (no attribute marks it), so recolour that inside the list only */
+        --ig-highlight-background: 61, 174, 233 !important;
+    }
+    /* Its inner column is pinned at 320px (width and min-width) */
+    div[role="navigation"][aria-label="Thread list"] :is([class~="x13kx2ur"], [class~="x1wggrwl"], [class~="x1u1lrf5"], [class~="x17upfok"], [class~="xceizu"], [class~="x1m258z3"], [class~="x1ve2i01"]),
+    div[role="navigation"][aria-label="Thread list"] > div,
+    div[role="navigation"][aria-label="Thread list"] > div > div {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    /* No "New message" (pencil) button next to the username */
+    div[role="navigation"][aria-label="Thread list"] [role="button"]:has(svg[aria-label="New message"]) {
+        display: none !important;
+    }
+    /* Loading placeholders also use the highlight colour: keep them grey */
+    div[role="navigation"][aria-label="Thread list"] [role="status"] {
+        --ig-highlight-background: 255, 255, 255, .1 !important;
+    }
+    /* Username row slimmed to fit the strip (16 + 30 + 15 = 61px) */
+    div[role="navigation"][aria-label="Thread list"] > div > div:first-child {
+        height: var(--aero-strip) !important;
+        min-height: var(--aero-strip) !important;
+        padding-top: 16px !important;
+        padding-bottom: 15px !important;
+        box-sizing: border-box !important;
+    }
+    /* Instagram's own divider line on the panel */
+    div[role="navigation"][aria-label="Thread list"] div:has(label > input[placeholder*="Search" i]) {
+        border-inline-end: none !important;
+    }
+    /* Chat rows: flat with a subtle hover, blue when selected.
+       A row = the innermost button holding a 56px avatar (matching "no buttons
+       inside" breaks on hover, when Instagram adds a "more options" button) */
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])) {
+        border-radius: 4px !important;
+        transition: background-color 0.15s ease !important;
+    }
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])):hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    /* Discord-sized rows: ~42px tall, 32px avatars, inset 8px with rounded
+       highlight (Instagram: 72px rows, 56px avatars, 24px side padding) */
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])) {
+        margin: 1px 8px !important;
+    }
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])) > div {
+        padding: 5px 8px !important;
+    }
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])) [style*="--x-height: 56px"],
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])) span[style*="height: 56px"] {
+        width: 32px !important;
+        height: 32px !important;
+        --x-width: 32px !important;
+        --x-height: 32px !important;
+    }
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])) span[style*="height: 56px"] img {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    /* Story ring (a 67px canvas around the 56px avatar), scaled to match */
+    div[role="navigation"][aria-label="Thread list"] div[role="button"]:has(span[style*="height: 56px"]):not(:has([role="button"] span[style*="height: 56px"])) canvas[style*="position: absolute"] {
+        width: 38px !important;
+        height: 38px !important;
+        top: -3px !important;
+        left: -3px !important;
+    }
+
+    /* =========================================================================
+       6. CHAT HEADER (Discord titleBar + toolbar buttons)
+       The header is the part of the chat pane holding the (i) button
+       but not the message box.
+       ========================================================================= */
+    div:has([role="textbox"]) > div:has(svg[aria-label="Conversation information"]):not(:has([role="textbox"])) {
+        background: var(--aero-strip-bg) !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        position: relative !important;
+        z-index: 1 !important;
+    }
+    /* Slimmer: Instagram pads it 16px top and bottom */
+    div:has([role="textbox"]) > div:has(svg[aria-label="Conversation information"]):not(:has([role="textbox"])) > div {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        border-bottom-color: transparent !important;
+    }
+    /* Call / video / info as glossy square buttons */
+    div:has([role="textbox"]) > div:has(svg[aria-label="Conversation information"]):not(:has([role="textbox"])) [role="button"]:has(svg:is([aria-label="Audio call"], [aria-label="Video call"], [aria-label="Conversation information"])):not(:has([role="button"])) {
+        background: var(--aero-button) !important;
+        border: 1px solid #000 !important;
+        border-radius: 6px !important;
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+        width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        margin: 0 3px !important;
+        box-sizing: border-box !important;
+    }
+    div:has([role="textbox"]) > div:has(svg[aria-label="Conversation information"]):not(:has([role="textbox"])) [role="button"]:has(svg:is([aria-label="Audio call"], [aria-label="Video call"], [aria-label="Conversation information"])):not(:has([role="button"])):hover {
+        background: var(--aero-button-hover) !important;
+    }
+    div:has([role="textbox"]) > div:has(svg[aria-label="Conversation information"]):not(:has([role="textbox"])) [role="button"]:has(svg:is([aria-label="Audio call"], [aria-label="Video call"], [aria-label="Conversation information"])):not(:has([role="button"])):active {
+        background: var(--aero-button-active) !important;
+    }
+    div:has([role="textbox"]) > div:has(svg[aria-label="Conversation information"]):not(:has([role="textbox"])) svg:is([aria-label="Audio call"], [aria-label="Video call"], [aria-label="Conversation information"]) {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    /* =========================================================================
+       7. MESSAGE BOX (Discord channelTextArea / Nemo statusbar)
+       ========================================================================= */
+    div:has(> div > div > div > div > [role="textbox"]) {
+        background: linear-gradient(to bottom, #222222 0%, #000000 100%) !important;
+        border-color: #000 !important;
+        border-radius: 6px !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+        /* taller, like Discord's message box */
+        min-height: 56px !important;
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        box-sizing: border-box !important;
+        /* the box stacks its contents in a column: centre them vertically */
+        justify-content: center !important;
+    }
+    [role="textbox"][contenteditable="true"] {
+        font-size: 15px !important;
+        line-height: 22px !important;
+    }
+    div:has(> div > div > [role="textbox"]) {
+        border-radius: 6px !important;
+    }
+    /* Emoji / voice / image / sticker: flat icons like Discord's message box,
+       highlighted on hover */
+    [role="button"]:has(svg:is([aria-label="Choose an emoji"], [aria-label="Voice Clip"], [aria-label="Add Photo or Video"], [aria-label="Choose a GIF or sticker"])):not(:has([role="button"])) {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 4px !important;
+        box-shadow: none !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+        width: 32px !important;
+        height: 32px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        margin: 2px 4px !important;
+        box-sizing: border-box !important;
+    }
+    [role="button"]:has(svg:is([aria-label="Choose an emoji"], [aria-label="Voice Clip"], [aria-label="Add Photo or Video"], [aria-label="Choose a GIF or sticker"])):not(:has([role="button"])):hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #fff !important;
+    }
+    [role="button"]:has(svg:is([aria-label="Choose an emoji"], [aria-label="Voice Clip"], [aria-label="Add Photo or Video"], [aria-label="Choose a GIF or sticker"])):not(:has([role="button"])):active {
+        background: rgba(255, 255, 255, 0.05) !important;
+    }
+    svg:is([aria-label="Choose an emoji"], [aria-label="Voice Clip"], [aria-label="Add Photo or Video"], [aria-label="Choose a GIF or sticker"]) {
+        width: 22px !important;
+        height: 22px !important;
+        color: inherit !important;
+    }
+
+    /* =========================================================================
+       8. SEARCH FIELD (Discord chat search / Nemo address bar)
+       The box is the <label> wrapping the search icon + input
+       ========================================================================= */
+    label:has(> input[placeholder*="Search" i]) {
+        background: linear-gradient(to bottom, #000000 0%, #222222 100%) !important;
+        border: 1px solid #000 !important;
+        border-radius: 4px !important;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    label:has(> input[placeholder*="Search" i]) > input {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #fff !important;
+    }
+    label:has(> input[placeholder*="Search" i]) > input::placeholder {
+        color: #aaaaaa !important;
+    }
+
+    /* =========================================================================
+       9. GLASS CARDS (Feed posts, profile header)
+       ========================================================================= */
+    main article,
+    main header {
+        background: var(--aero-card-bg) !important;
+        border: 1px solid #000 !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+        border-radius: 6px !important;
+        color: #fff !important;
+        padding: 12px !important;
+        margin-bottom: 16px !important;
+    }
+    /* Nested headers inside a post (the username row) stay flat */
+    main article header {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    main article img,
+    main article video {
+        border-radius: 4px !important;
+    }
+
+    /* Modals, menus and popovers: frosted glass */
+    div[role="dialog"] > div,
+    div[role="menu"],
+    div[role="listbox"] {
+        backdrop-filter: blur(20px) !important;
+    }
+
+    /* =========================================================================
+       10. SCROLLBARS (Nemo / Xarchiver)
+       ========================================================================= */
+    :root, html {
+        scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.2) !important;
+        scrollbar-width: thin !important;
+    }
+    ::-webkit-scrollbar {
+        width: 6px !important;
+        height: 6px !important;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 3px !important;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.35) !important;
+    }
+    ::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 0, 0.2) !important;
+    }
+
+
+    /* =========================================================================
+       11. SENT BUBBLES (Discord accent)
+       Instagram re-declares the bubble colour on inner elements, so the
+       :root values above lose; pin them on every element inside the page.
+       ========================================================================= */
+    :root, .__fb-dark-mode, .__fb-light-mode, body * {
+        --ig-outgoing-message-bubble: 61, 174, 233 !important;
+        --bubbleContentUserBackgroundColor: #3daee9 !important;
+        --chat-outgoing-message-bubble-background-color: #3daee9 !important;
+        --chat-outgoing-message-background-gradient: linear-gradient(#3daee9, #3daee9) !important;
+    }
+
+
+
+    /* =========================================================================
+       12. MESSAGES PAGE: NAV ICONS IN THE HEADERBAR
+       On the DMs page the rail is folded into the top strip, sitting where
+       the username plate was, so the page gets the rail's 72px back.
+       (Other pages keep the vertical rail.)
+       ========================================================================= */
+    html:has(div[aria-label="Thread list"]) div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
+        height: var(--aero-strip) !important;
+        background: none !important;
+        z-index: 20 !important;
+    }
+    html:has(div[aria-label="Thread list"]) div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        height: 100% !important;
+        padding: 0 8px !important;
+        gap: 4px !important;
+    }
+    /* Logo box: no fixed 48px square */
+    html:has(div[aria-label="Thread list"]) div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:first-child,
+    html:has(div[aria-label="Thread list"]) div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:first-child > div {
+        width: auto !important;
+        height: auto !important;
+        flex: 0 0 auto !important;
+    }
+    /* Links: one row filling the rest of the strip */
+    html:has(div[aria-label="Thread list"]) div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:nth-child(2) {
+        flex-direction: row !important;
+        flex: 1 1 auto !important;
+        width: auto !important;
+        height: 100% !important;
+        align-items: center !important;
+    }
+    html:has(div[aria-label="Thread list"]) div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] > div > div:nth-child(2) > div {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-evenly !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 0 !important;
+    }
+    /* Icon buttons: 40px instead of 48px with 8px margins */
+    html:has(div[aria-label="Thread list"]) div:not(main div):has(a[href="/explore/"]):not(:has(main))[style*="width"] :is(a, [role="button"]) > div {
+        margin: 0 !important;
+        padding: 8px !important;
+    }
+    /* Page reclaims the rail's 72px */
+    div:has(> div > div > div[role="navigation"][aria-label="Thread list"]) {
+        padding-inline-start: 0 !important;
+    }
+    /* Username plate hidden; its row stays as the space the icons sit over */
+    div[role="navigation"][aria-label="Thread list"] > div > div:first-child > * {
+        visibility: hidden !important;
+    }
+
+
+    /* =========================================================================
+       13. FONT
+       Instagram asks for Apple/Windows system fonts that aren't installed here,
+       so Firefox fell back to Nimbus Sans. Inter is close to Discord's gg sans.
+       ========================================================================= */
+    body, body *:not(svg):not(svg *) {
+        font-family: "Inter", "Noto Sans", sans-serif !important;
+    }
+    body {
+        -webkit-font-smoothing: antialiased;
+        /* Inter's more legible alternates: open digits, single-storey a/l tails */
+        font-feature-settings: "cv11", "ss01";
+    }
+
+}

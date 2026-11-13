@@ -1,0 +1,32 @@
+* {
+    all: unset; /* Reset default styles */
+}
+
+.notification {
+    /* Your original gradient and borders */
+    background: linear-gradient(to bottom, #5e5e5e 0%, #000 70%);
+    border: 1px solid #4b4b4b;
+    border-radius: 15px;
+    
+    /* Compact sizing */
+    min-width: 300px;  /* Reduced from ~400px default */
+    min-height: 40px;  /* Slimmer height */
+    margin: 10px;      /* Less outer margin */
+    padding: 8px 15px; /* Tighter padding (top/bottom: 8px, sides: 12px) */
+    
+    /* Text scaling */
+    font-size: 11px;   /* Smaller text */
+}
+
+/* Optional: Shrink icons if used */
+.notification .icon {
+    min-width: 24px;
+    min-height: 24px;
+}
+
+/* Make close button smaller */
+.close-button {
+    min-width: 16px;
+    min-height: 16px;
+    margin-left: 8px;
+}

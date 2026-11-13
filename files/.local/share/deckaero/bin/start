@@ -1,0 +1,6 @@
+#!/bin/bash
+# Host side (Plasma autostart): launch the deck-aero session inside its distrobox.
+# Only for the Plasma desktop session, never in Game Mode.
+[ "$XDG_CURRENT_DESKTOP" = KDE ] || [ "$XDG_SESSION_DESKTOP" = KDE ] || [ -n "$KDE_FULL_SESSION" ] || exit 0
+[ -n "$WAYLAND_DISPLAY" ] || exit 0   # waybar needs the Wayland desktop
+exec distrobox enter deckaero -- "$HOME/.local/share/deckaero/bin/session" >"${XDG_RUNTIME_DIR:-/tmp}/deckaero-session.log" 2>&1

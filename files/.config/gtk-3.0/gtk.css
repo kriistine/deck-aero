@@ -1,0 +1,150 @@
+/* =========================================================
+   DARK AERO HYPRLAND GLOBAL GTK3 THEME
+   ========================================================= */
+
+@define-color theme_selected_bg_color #3daee9;
+@define-color selected_bg_color #3daee9;
+@define-color theme_selected_fg_color #ffffff;
+@define-color selected_fg_color #ffffff;
+
+/* --- Main Windows (The base transparent layer) --- */
+window {
+    background-color: rgba(15, 15, 15, 0.5);
+    background-image: none;
+    color: #ffffff;
+}
+
+/* Clear default solid backgrounds so our layered transparency works */
+window box,
+window paned,
+window scrolledwindow,
+window viewport {
+    background-color: transparent;
+    background-image: none;
+    color: #ffffff;
+}
+
+/* --- Content Views (Main file lists / grids / icons) --- */
+/* This adds a subtle dark layer over the main view areas to reduce overall transparency and boost readability */
+.view,
+treeview.view,
+scrolledwindow treeview {
+    background-color: rgba(15, 15, 15, 0.35);
+    color: #ffffff;
+}
+
+/* --- Sidebars (Distinct Darker Sidebar Layer) --- */
+/* This restores the darker sidebar in Nemo, and applies it to Xarchiver's sidebar as well */
+.sidebar,
+.sidebar treeview,
+.sidebar scrolledwindow,
+paned > scrolledwindow:first-child,
+paned > scrolledwindow:first-child treeview {
+    background-color: rgba(5, 5, 5, 0.45);
+    color: #ffffff;
+}
+
+/* --- Menubars and Toolbars (Aero Linear Gradient) --- */
+menubar, 
+toolbar,
+headerbar,
+.titlebar {
+    background-color: transparent;
+    background-image: linear-gradient(to bottom, rgba(70, 70, 70, 0.8) 0%, rgba(43, 43, 43, 0.8) 49%, rgba(0, 0, 0, 0.8) 50%, rgba(17, 17, 17, 0.8) 100%);
+    border-bottom: 1px solid #000000;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+/* --- Buttons --- */
+button {
+    background-color: transparent;
+    background-image: linear-gradient(to bottom, #4a4a4a 0%, #2b2b2b 49%, #000000 50%, #111111 100%);
+    border: 1px solid #000000;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+}
+
+button:hover {
+    background-image: linear-gradient(to bottom, #666666 0%, #444444 49%, #1a1a1a 50%, #2b2b2b 100%);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0,0,0,0.5);
+}
+
+button:active,
+button:checked {
+    background-image: linear-gradient(to bottom, #000000 0%, #151515 100%);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(0,0,0,1);
+    border: 1px solid #000000;
+    color: #cccccc;
+}
+
+/* --- Text Entry Fields (e.g., Location Bars) --- */
+entry {
+    background-color: #1a1a1a;
+    background-image: linear-gradient(to bottom, #000000 0%, #222222 100%);
+    border: 1px solid #000000;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.1);
+    color: #ffffff;
+}
+
+/* --- Statusbars --- */
+statusbar {
+    background-image: linear-gradient(to bottom, #222222 0%, #000000 100%);
+    border-top: 1px solid #000000;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* --- Paned Separators --- */
+paned > separator {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* --- Treeviews / Main File Lists Selection --- */
+treeview:selected,
+treeview row:selected,
+treeview:selected:focus {
+    background-color: #3daee9;
+    background-image: none;
+    color: #ffffff;
+}
+
+treeview row:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Selection Rubberband --- */
+rubberband, .rubberband {
+    background-color: rgba(61, 174, 233, 0.3);
+    border: 1px solid #3daee9;
+}
+
+/* --- Nemo Specific Fallbacks --- */
+.nemo-window .places-treeview:selected,
+.nemo-window .places-treeview .view.cell:selected,
+.nemo-window .places-treeview iconview.cell:selected,
+.nemo-window .places-treeview:selected:hover {
+    background-color: #3daee9;
+    color: #ffffff;
+}
+
+.nemo-window .places-treeview:hover,
+.nemo-window .places-treeview .view.cell:hover,
+.nemo-window .places-treeview iconview.cell:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nemo-window .nemo-canvas-item:selected,
+.nemo-canvas-item:selected {
+    background-color: #3daee9;
+    color: #ffffff;
+    border-radius: 4px;
+}
+
+.nemo-window .nemo-canvas-item:hover,
+.nemo-canvas-item:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+@import 'colors.css';

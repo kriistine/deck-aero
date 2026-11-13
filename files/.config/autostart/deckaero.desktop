@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=deck-aero bar
+Exec=sh -c '"$HOME/.local/share/deckaero/bin/start"'
+X-KDE-autostart-phase=2
+OnlyShowIn=KDE;
+NoDisplay=true

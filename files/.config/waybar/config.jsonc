@@ -1,0 +1,272 @@
+{
+  "layer": "bottom",
+  "spacing": 0,
+  "height": 0,
+  "margin-top": 0,
+  "position": "bottom",
+  "margin-right": 50,
+  "margin-bottom": 8,
+  "margin-left": 50,
+  "modules-left": [
+    "custom/os_btn",
+    "group/workspaces",
+    "group/taskbar"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "tray",
+    "network",
+    "battery",
+    "pulseaudio",
+    "custom/temperature"
+  ],
+  "custom/os_btn": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "~/.local/share/deckaero/bin/launcher",
+    "on-click-right": "swaync-client -t -sw"
+  },
+  "group/workspaces": {
+    "orientation": "horizontal",
+    "modules": [
+      "custom/ws1",
+      "custom/ws2",
+      "custom/ws3",
+      "custom/ws4",
+      "custom/ws5",
+      "custom/ws6",
+      "custom/ws7",
+      "custom/ws8",
+      "custom/ws9"
+    ]
+  },
+  "group/taskbar": {
+    "orientation": "horizontal",
+    "modules": [
+      "image#t1",
+      "image#t2",
+      "image#t3",
+      "image#t4",
+      "image#t5",
+      "image#t6",
+      "image#t7",
+      "image#t8",
+      "image#t9",
+      "image#t10",
+      "image#t11",
+      "image#t12"
+    ]
+  },
+  "custom/ws1": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws1 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 1 >/dev/null"
+  },
+  "custom/ws2": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws2 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 2 >/dev/null"
+  },
+  "custom/ws3": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws3 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 3 >/dev/null"
+  },
+  "custom/ws4": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws4 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 4 >/dev/null"
+  },
+  "custom/ws5": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws5 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 5 >/dev/null"
+  },
+  "custom/ws6": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws6 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 6 >/dev/null"
+  },
+  "custom/ws7": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws7 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 7 >/dev/null"
+  },
+  "custom/ws8": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws8 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 8 >/dev/null"
+  },
+  "custom/ws9": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/ws9 2>/dev/null",
+    "return-type": "json",
+    "signal": 9,
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Desktop 9 >/dev/null"
+  },
+  "image#t1": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t1 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 1 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 1 >/dev/null"
+  },
+  "image#t2": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t2 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 2 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 2 >/dev/null"
+  },
+  "image#t3": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t3 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 3 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 3 >/dev/null"
+  },
+  "image#t4": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t4 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 4 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 4 >/dev/null"
+  },
+  "image#t5": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t5 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 5 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 5 >/dev/null"
+  },
+  "image#t6": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t6 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 6 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 6 >/dev/null"
+  },
+  "image#t7": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t7 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 7 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 7 >/dev/null"
+  },
+  "image#t8": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t8 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 8 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 8 >/dev/null"
+  },
+  "image#t9": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t9 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 9 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 9 >/dev/null"
+  },
+  "image#t10": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t10 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 10 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 10 >/dev/null"
+  },
+  "image#t11": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t11 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 11 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 11 >/dev/null"
+  },
+  "image#t12": {
+    "exec": "cat $XDG_RUNTIME_DIR/deckaero/t12 2>/dev/null",
+    "signal": 8,
+    "size": 32,
+    "on-click": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Activate 12 >/dev/null",
+    "on-click-middle": "gdbus call --session -d org.deckaero.Bridge -o / -m org.deckaero.Bridge.Close 12 >/dev/null"
+  },
+  "tray": {
+    "spacing": 10,
+    "tooltip": false
+  },
+  "clock": {
+    "format": "{:%H:%M - %a | %d %b %Y}",
+    "tooltip": false,
+    "on-click": "swaync-client -t -sw"
+  },
+  "network": {
+    "format-wifi": "󰤢 {bandwidthDownBits}",
+    "format-ethernet": "󰤢 {bandwidthDownBits}",
+    "format-disconnected": "󰤠 No Network",
+    "interval": 5,
+    "tooltip": false
+  },
+  "pulseaudio": {
+    "scroll-step": 5,
+    "max-volume": 150,
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "{icon} {volume}%",
+    "format-icons": [
+      "",
+      "",
+      " "
+    ],
+    "nospacing": 1,
+    "format-muted": " ",
+    "on-click": "pavucontrol",
+    "tooltip": false
+  },
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "interval": 5,
+    "states": {
+      "warning": 20,
+      "critical": 10
+    },
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tooltip": false
+  },
+  "custom/temperature": {
+    "exec": "~/.config/waybar/scripts/temperature.sh",
+    "return-type": "json",
+    "interval": 3,
+    "format": "{}",
+    "on-click": "~/.config/waybar/scripts/temperature-popup.sh"
+  }
+}

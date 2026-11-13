@@ -1,0 +1,30 @@
+#!/bin/bash
+# Container side: bridge + swaync + waybar, each restarted if it dies.
+# Only ever touches processes this script started (tracked in pidfiles).
+D="$HOME/.local/share/deckaero"
+RUN="${XDG_RUNTIME_DIR:-/tmp}/deckaero"; mkdir -p "$RUN"
+export XDG_CURRENT_DESKTOP=KDE GDK_BACKEND=wayland
+
+# stop a previous deck-aero session (e.g. installer re-run), nothing else
+if [ -f "$RUN/session.pid" ]; then
+  old=$(cat "$RUN/session.pid")
+  [ "$old" != $$ ] && kill "$old" 2>/dev/null && sleep 1   # its trap stops its children
+fi
+echo $$ > "$RUN/session.pid"
+
+keep() { # keep NAME CMD...  — respawn loop, child pid in $RUN/NAME.pid
+  local name=$1; shift
+  while :; do
+    "$@" & echo $! > "$RUN/$name.pid"; wait $!
+    echo "[session] $name exited ($?), restarting" >&2; sleep 2
+  done
+}
+keep bridge python3 "$D/bin/bridge.py" &
+# Plasma releases org.freedesktop.Notifications once its panel is gone; wait for it.
+( for i in $(seq 30); do gdbus call --session -d org.freedesktop.DBus -o /org/freedesktop/DBus \
+      -m org.freedesktop.DBus.NameHasOwner org.freedesktop.Notifications | grep -q true || break; sleep 1; done
+  keep swaync swaync ) &
+sleep 1
+keep waybar waybar &
+trap 'rm -f "$RUN/session.pid"; kill 0' EXIT TERM INT
+wait

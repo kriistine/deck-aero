@@ -1,0 +1,55 @@
+* {
+font-family: "Noto Sans", sans-serif;
+color: #ffffff;
+}
+
+#window {
+background: rgba(0, 20, 20, 0.8); /* Increased opacity for readability */
+border-radius: 9px;
+margin: auto;
+padding: 12px;
+border: 1px solid rgb(0,0,0);
+}
+
+#input {
+padding: 10px;
+border-radius: 8px;
+border: 1px solid rgb(0,0,0);
+margin: 8px;
+background-image: linear-gradient(to top, rgba(90,90,90,0.6), rgba(35,35,35,0.8));
+box-shadow: inset 0px -5px 8px rgba(0,0,0,0.4);
+}
+
+#entry {
+border-radius: 10px;
+border: 1px solid rgba(255,255,255,0.1);
+border-bottom-color: rgba(255,255,255,0.25);
+border-right-color: rgba(255,255,255,0.25);
+padding: 8px; /* Increased padding */
+margin: 4px 8px;
+background-image: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(20,20,20,0.1) 50%, rgba(0,0,0,0.2) 50%);
+}
+
+#entry:selected {
+background-color: rgba(0,255,255,0.3);
+outline: none;
+}
+
+/* --- THE FIXES FOR ICONS AND TEXT --- */
+
+#img {
+margin-right: 12px;
+width: 32px;  /* Essential: Wofi needs a set width for icons */
+height: 32px; /* Essential: Wofi needs a set height for icons */
+}
+
+#text {
+margin: auto 0; /* Vertically centers the text */
+background: transparent;
+}
+
+/* This container holds the image and text inside the entry */
+#inner-box {
+margin: 0px;
+padding: 0px;
+}

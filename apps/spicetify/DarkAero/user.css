@@ -1,0 +1,177 @@
+/* =========================================================
+   DARK AERO HYPRLAND - SPOTIFY THEME (user.css)
+   ========================================================= */
+
+:root {
+    /* Exact Nemo Blue Accent (#3daee9) */
+    --spice-button: #3daee9 !important;
+    --spice-button-active: #4bbbeb !important;
+    --spice-selected-row: #3daee9 !important;
+    --spice-tab-active: #3daee9 !important;
+    --spice-notification: #3daee9 !important;
+    --spice-misc: #3daee9 !important;
+}
+
+/* 1. FAUX-TRANSPARENCY WALLPAPER BACKGROUND
+   ========================================================= */
+/* Force the HTML root transparent and set wallpaper directly on body to avoid stacking context bugs */
+html {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+body {
+    background-image: url("assets/wallpaper.png") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+
+/* Apply native blur to the background wallpaper behind all panels */
+.Root__top-container {
+    backdrop-filter: blur(25px) brightness(0.4) !important;
+}
+
+/* 2. STRIP ALL NESTED SOLID CONTAINER BACKGROUNDS
+   ========================================================= */
+/* Forces every nested wrapper in Spotify to be completely transparent so your body background shows through */
+#main, 
+.Root,
+.Root__left-sidebar,
+.Root__main-view,
+.Root__now-playing-bar,
+.Root__right-sidebar,
+.main-view-container,
+.main-view-container__scroll-node,
+.main-view-container__scroll-node-child,
+.main-scrollbar-container,
+.main-home-homeHeader,
+.main-entityHeader-backgroundColor,
+.main-entityHeader-overlay,
+.main-playlist-playlist,
+.artist-artistPage-artistPage,
+.album-albumPage-albumPage,
+.main-topBar-background,
+.main-topBar-overlay,
+.main-actionBarBackground-background,
+main {
+    background-color: transparent !important;
+    background: transparent !important;
+    background-image: none !important;
+}
+
+/* 3. MATCH DISCORD PANEL DENSITY & OPACITIES over the background
+   ========================================================= */
+/* Left Sidebar (Matches Discord Nemo Sidebar: rgba(5, 5, 5, 0.45)) */
+.Root__left-sidebar,
+.main-buddyFeed-container {
+    background-color: rgba(5, 5, 5, 0.45) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Main Content Area (Matches Discord Nemo View: rgba(15, 15, 15, 0.35)) */
+.Root__main-view,
+.main-view-container {
+    background-color: rgba(15, 15, 15, 0.35) !important;
+}
+
+/* Player Bar (Matches Discord Titlebar / Nemo Window Base: rgba(15, 15, 15, 0.55)) */
+.Root__now-playing-bar {
+    background-color: rgba(15, 15, 15, 0.55) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.5) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Floating context menus */
+.main-contextMenu-menu,
+.main-userWidget-box,
+.dropdown-menu {
+    background-color: rgba(15, 15, 15, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 6px !important;
+}
+
+/* 4. FIXED CIRCULAR PLAY BUTTONS
+   ========================================================= */
+.main-playButton-PlayButton,
+.main-playButton-primary,
+.main-card-PlayButton,
+[class*="playButton"] {
+    border-radius: 50% !important;
+    overflow: hidden !important;
+}
+
+.main-playButton-PlayButton button,
+.main-playButton-primary button,
+.main-card-PlayButton button,
+[class*="playButton"] button,
+[class*="playButton"] [class*="ButtonInner"] {
+    background-color: #3daee9 !important;
+    background-image: linear-gradient(to bottom, #4bbbeb 0%, #3daee9 100%) !important;
+    border: 1px solid #2993cb !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0,0,0,0.4) !important;
+    border-radius: 50% !important;
+}
+
+.main-playButton-PlayButton svg,
+.main-playButton-primary svg,
+.main-card-PlayButton svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* 5. TOP HEADER NAVIGATION
+   ========================================================= */
+.main-topBar-background {
+    background-image: linear-gradient(to bottom, rgba(70, 70, 70, 0.8) 0%, rgba(43, 43, 43, 0.8) 49%, rgba(0, 0, 0, 0.8) 50%, rgba(17, 17, 17, 0.8) 100%) !important;
+    border-bottom: 1px solid #000000 !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+}
+
+.main-topBar-historyButtons .main-topBar-button,
+.main-userWidget-button {
+    background-color: transparent !important;
+    background-image: linear-gradient(to bottom, #4a4a4a 0%, #2b2b2b 49%, #000000 50%, #111111 100%) !important;
+    border: 1px solid #000000 !important;
+    border-radius: 6px !important;
+}
+
+.main-topBar-historyButtons .main-topBar-button:hover,
+.main-userWidget-button:hover {
+    background-image: linear-gradient(to bottom, #666666 0%, #444444 49%, #1a1a1a 50%, #2b2b2b 100%) !important;
+}
+
+/* Search input mapping */
+.x-searchInput-searchInputInput {
+    background-color: #1a1a1a !important;
+    background-image: linear-gradient(to bottom, #000000 0%, #222222 100%) !important;
+    border: 1px solid #000000 !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.1) !important;
+    color: #ffffff !important;
+}
+
+/* 6. INTERACTIVE SLIDERS
+   ========================================================= */
+.playback-bar .progress-bar__slider,
+.volume-bar .progress-bar__slider {
+    background-color: #3daee9 !important;
+}
+
+.x-progressBar-sliderArea .x-progressBar-fillColor {
+    background-color: #3daee9 !important;
+}
+
+/* Scrollbars mapping */
+::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 3px !important;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.35) !important;
+}
