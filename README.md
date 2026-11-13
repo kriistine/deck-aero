@@ -16,7 +16,7 @@ It runs your **actual waybar, swaync and wofi configs** on the Deck's KDE deskto
 | Notifications | real swaync, same config/style (Plasma's popups are switched off) |
 | Launcher | real wofi, same style — the Steam button on the bar opens it |
 | Wallpaper | same image, cover-fit |
-| Windows | Seven-Black: the Seven Aero frame with solid black borders and the glass buttons kept (Hyprland had no title bars, but with a controller you want close/maximize buttons) |
+| Windows | Seven-Black: Seven-Blue's Aero glass recoloured to a smoky black, on focused and unfocused windows alike, with the glass buttons. Hyprland had no title bars, but with a controller you want the close and maximize buttons |
 | Qt/KDE apps | Dark Aero colour scheme + Fusion |
 | GTK apps | diinki-aero theme, also forced onto Flatpak apps |
 | Icons / cursor | Crystal Remix (diinki) / WoW cursors |
