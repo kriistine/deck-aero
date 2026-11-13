@@ -1,12 +1,12 @@
 [General]
-ActiveTextColor=0,0,0,255
-ActiveTextShadowColor=255,255,255,255
+ActiveTextColor=255,255,255,255
+ActiveTextShadowColor=0,0,0,255
 Animation=200
 DecorationPosition=0
 HaloActive=true
 HaloInactive=true
-InactiveTextColor=0,0,0,255
-InactiveTextShadowColor=255,255,255,255
+InactiveTextColor=170,170,170,255
+InactiveTextShadowColor=0,0,0,255
 LeftButtons=MS
 RightButtons=IAX
 Shadow=True

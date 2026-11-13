@@ -76,7 +76,7 @@ plasma-apply-cursortheme WoWCursors >/dev/null 2>&1 || kw --file kcminputrc --gr
 kw --file kcminputrc --group Mouse --key cursorSize 24
 kw --file kdeglobals --group General --key font "Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
 kw --file kwinrc --group org.kde.kdecoration2 --key library org.kde.kwin.aurorae.v2
-kw --file kwinrc --group org.kde.kdecoration2 --key theme __aurorae__svg__Seven-Blue
+kw --file kwinrc --group org.kde.kdecoration2 --key theme __aurorae__svg__Seven-Black
 kw --file kwinrc --group Plugins --key blurEnabled true
 kw --file kwinrc --group Desktops --key Number 4
 kw --file kwinrc --group Desktops --key Rows 1
