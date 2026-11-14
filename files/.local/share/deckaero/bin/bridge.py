@@ -23,7 +23,18 @@ KWIN_JS = os.path.join(SHARE, "kwin/bridge.js")
 SLOTS, WS_SLOTS = 12, 9
 SIG_TASKBAR, SIG_WS = 8, 9
 PX = 64          # rendered size; waybar scales to "size": 32 -> crisp on HiDPI too
-ICON_THEME = "crystal-remix-icon-theme-diinki-version"
+def _kde_icon_theme():
+    """The icon pack Plasma is using (kdeglobals [Icons] Theme), so the taskbar matches it."""
+    try:
+        kf = GLib.KeyFile()
+        kf.load_from_file(os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.join(HOME, ".config")), "kdeglobals"),
+                          GLib.KeyFileFlags.NONE)
+        return kf.get_string("Icons", "Theme")
+    except GLib.Error:
+        return "breeze"
+
+
+ICON_THEME = _kde_icon_theme()
 PLUGIN = "deckaero-bridge"
 
 # Host paths are visible under /run/host when we run inside distrobox.

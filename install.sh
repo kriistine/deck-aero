@@ -69,9 +69,15 @@ distrobox enter deckaero -- distrobox-export --app nemo  >/dev/null || true
 c_ok "Applying colours, icons, cursors, window borders"
 plasma-apply-colorscheme DarkAeroDeck >/dev/null || c_warn "colour scheme not applied"
 kw --file kdeglobals --group KDE   --key widgetStyle Fusion
-kw --file kdeglobals --group Icons --key Theme crystal-remix-icon-theme-diinki-version
-[ -x /usr/lib/plasma-changeicons ] && /usr/lib/plasma-changeicons crystal-remix-icon-theme-diinki-version >/dev/null 2>&1 || true
-[ -x /usr/libexec/plasma-changeicons ] && /usr/libexec/plasma-changeicons crystal-remix-icon-theme-diinki-version >/dev/null 2>&1 || true
+# Icons: keep whatever pack the Deck already uses;
+# GTK apps, the launcher and the taskbar follow it.
+# (if an older deck-aero run changed it, use the pack from before that run)
+KG="$HOME/.config/kdeglobals"; [ -f "$BACKUP/kdeglobals" ] && KG="$BACKUP/kdeglobals"
+ICONS="$( (kreadconfig6 --file "$KG" --group Icons --key Theme || kreadconfig5 --file "$KG" --group Icons --key Theme) 2>/dev/null)"
+[ "$ICONS" = crystal-remix-icon-theme-diinki-version ] && ICONS=""
+[ -n "$ICONS" ] || ICONS=breeze
+kw --file kdeglobals --group Icons --key Theme "$ICONS"
+echo "    keeping your icon pack: $ICONS"
 plasma-apply-cursortheme WoWCursors >/dev/null 2>&1 || kw --file kcminputrc --group Mouse --key cursorTheme WoWCursors
 kw --file kcminputrc --group Mouse --key cursorSize 24
 kw --file kdeglobals --group General --key font "Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
@@ -85,10 +91,11 @@ dbus_call -d org.kde.KWin -o /KWin -m org.kde.KWin.reconfigure || true
 c_ok "GTK theme (diinki-aero) for normal + Flatpak apps"
 if need gsettings; then
   gsettings set org.gnome.desktop.interface gtk-theme diinki-aero || true
-  gsettings set org.gnome.desktop.interface icon-theme crystal-remix-icon-theme-diinki-version || true
+  gsettings set org.gnome.desktop.interface icon-theme "$ICONS" || true
   gsettings set org.gnome.desktop.interface cursor-theme WoWCursors || true
   gsettings set org.gnome.desktop.interface color-scheme prefer-dark || true
 fi
+sed -i "s/^gtk-icon-theme-name=.*/gtk-icon-theme-name=$ICONS/" "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini" 2>/dev/null || true
 sed -i 's/^gtk-theme-name=.*/gtk-theme-name=diinki-aero/' "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini" 2>/dev/null || true
 grep -q '^gtk-theme-name' "$HOME/.config/gtk-3.0/settings.ini" || sed -i '/^\[Settings\]/a gtk-theme-name=diinki-aero' "$HOME/.config/gtk-3.0/settings.ini"
 if need flatpak; then
