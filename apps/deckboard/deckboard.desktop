@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Deckboard
+Comment=Small on-screen keyboard (X to show/hide)
+Exec=/usr/bin/python3 /home/deck/deckboard/deckboard.py
+OnlyShowIn=KDE;
+X-KDE-autostart-phase=2
+NoDisplay=true

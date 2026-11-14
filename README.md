@@ -24,6 +24,7 @@ It runs your **actual waybar, swaync and wofi configs** on the Deck's KDE deskto
 | Firefox | transparent Aero `userChrome.css` + prefs (automatic); Stylus site themes in `apps/firefox/stylus/` (YouTube, Roblox, Instagram); Tampermonkey script in `apps/firefox/userscripts/` (Instagram DMs laid out like Discord) |
 | Discord | Dark Aero quickCSS (Vesktop or Vencord) |
 | Spotify | Spicetify DarkAero (optional, `--spotify`) |
+| On-screen keyboard | Deckboard: a smaller Aero-styled keyboard driven by the trackpads; X shows it, ⋯ opens the launcher. Source and setup in [`apps/deckboard/`](apps/deckboard/) |
 
 ## Install (on the Deck)
 

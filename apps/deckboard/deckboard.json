@@ -1,0 +1,19 @@
+{
+  "scale": 0.6,
+  "bottom_margin": 0,
+  "pad_overlap": 0.1,
+  "press_threshold": 2800,
+  "release_threshold": 1700,
+  "aim_threshold": 900,
+  "haptic_press": [
+    3000,
+    1500,
+    2
+  ],
+  "haptic_hover": [
+    1800,
+    0,
+    1
+  ],
+  "opacity": 1.0
+}
