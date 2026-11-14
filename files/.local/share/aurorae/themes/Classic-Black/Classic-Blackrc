@@ -1,6 +1,6 @@
 [General]
-ActiveTextColor=235,235,235,255
-InactiveTextColor=150,150,150,255
+ActiveTextColor=255,255,255,255
+InactiveTextColor=160,160,160,255
 UseTextShadow=false
 Animation=120
 TitleAlignment=Left

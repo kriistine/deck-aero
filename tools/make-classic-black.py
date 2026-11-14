@@ -11,10 +11,12 @@ os.makedirs(OUT, exist_ok=True)
 
 # ---- palette (black version of the reference) ----
 OUTER = "#000000"      # 1px outer outline        (ref #81878d)
-HI    = "#3a3a3a"      # 1px inner highlight      (ref #f3f4f5)
-MID   = "#1b1b1b"      # frame body               (ref #e3e5e7)
+HI    = "#535353"      # 1px inner highlight      (ref #f3f4f5)
+MID   = "#0c0c0c"      # frame body               (ref #e3e5e7)
 INNER = "#000000"      # line against the content (ref #bbc0c6)
-T_TOP, T_DIP, T_BOT = "#2a2a2a", "#161616", "#232323"   # title gradient (ref d9dcdf -> c5c9cd -> e0e2e4)
+# title bar = the split gloss used by your Firefox tab strip and Nemo toolbars:
+# lighter half 55->38, hard cut at 50% to 3->15
+GLOSS = [(0, "#373737"), (0.5, "#262626"), (0.5, "#030303"), (1, "#0f0f0f")]
 
 TITLE_EDGE_TOP, TITLE_H, TITLE_EDGE_BOTTOM = 2, 25, 1
 TOP = TITLE_EDGE_TOP + TITLE_H + TITLE_EDGE_BOTTOM      # 28
@@ -34,7 +36,7 @@ def title_rows(x, w, y0):
     ])
 
 def side_cols(x0, y, h, mirror):
-    cols = [OUTER, HI, MID, INNER]
+    cols = [OUTER, "#262626", MID, INNER]
     if mirror:
         cols = cols[::-1]
     return "".join(rect(x0 + i, y, 1, h, c) for i, c in enumerate(cols))
@@ -49,7 +51,7 @@ def frame(prefix, ox, oy):
         g.append(f'<g id="{prefix}-{name}" transform="translate({ox + x},{oy + y})">'
                  f'<rect x="0" y="0" width="{w}" height="{h}" fill="none"/>{body}</g>')
     # top row
-    tl = title_rows(0, B, 0) + rect(0, 0, 1, TOP, OUTER) + rect(1, 1, 1, TOP - 1, HI)
+    tl = title_rows(0, B, 0) + rect(0, 0, 1, TOP, OUTER) + rect(1, 1, 1, TOP - 1, "#262626")
     el("topleft", 0, 0, B, TOP, tl)
     el("top", B, 0, W, TOP, title_rows(0, W, 0))
     tr = title_rows(0, B, 0) + rect(B - 1, 0, 1, TOP, OUTER)
@@ -59,16 +61,16 @@ def frame(prefix, ox, oy):
     el("center", B, TOP, W, W, rect(0, 0, W, W, "#101010"))
     el("right", B + W, TOP, B, W, side_cols(0, 0, W, True))
     # bottom row
-    bl = bottom_rows(0, 0, B) + rect(0, 0, 1, B, OUTER) + rect(1, 0, 1, B - 1, HI)
+    bl = bottom_rows(0, 0, B) + rect(0, 0, 1, B, OUTER) + rect(1, 0, 1, B - 1, "#262626")
     el("bottomleft", 0, TOP + W, B, B, bl)
     el("bottom", B, TOP + W, W, B, bottom_rows(0, 0, W))
     br = bottom_rows(0, 0, B) + rect(B - 1, 0, 1, B, OUTER)
     el("bottomright", B + W, TOP + W, B, B, br)
     return "".join(g)
 
-defs = (f'<defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">'
-        f'<stop offset="0" stop-color="{T_TOP}"/><stop offset="0.16" stop-color="{T_DIP}"/>'
-        f'<stop offset="1" stop-color="{T_BOT}"/></linearGradient></defs>')
+defs = ('<defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">'
+        + "".join(f'<stop offset="{o}" stop-color="{c}"/>' for o, c in GLOSS)
+        + '</linearGradient></defs>')
 size = B + W + B
 body = (frame("decoration", 0, 0) + frame("decoration-inactive", 30, 0) +
         frame("decoration-opaque", 60, 0) + frame("decoration-opaque-inactive", 90, 0) +
@@ -78,15 +80,15 @@ open(f"{OUT}/decoration.svg", "w").write(
 
 # ---- buttons: 22x22, 1px outline, 2px radius, bold glyph ----
 BTN = 22
-STATES = {   # state: (fill top, fill bottom, outline, glyph)
-    "active":               ("#2c2c2c", "#202020", "#5a5a5a", "#ececec"),
-    "hover":                ("#3e3e3e", "#2f2f2f", "#7a7a7a", "#ffffff"),
-    "pressed":              ("#121212", "#181818", "#5a5a5a", "#d0d0d0"),
-    "deactivated":          ("#2c2c2c", "#202020", "#3e3e3e", "#5a5a5a"),
-    "inactive":             ("#262626", "#1d1d1d", "#4a4a4a", "#a8a8a8"),
-    "hover-inactive":       ("#3e3e3e", "#2f2f2f", "#7a7a7a", "#ffffff"),
-    "pressed-inactive":     ("#121212", "#181818", "#5a5a5a", "#d0d0d0"),
-    "deactivated-inactive": ("#262626", "#1d1d1d", "#363636", "#4a4a4a"),
+STATES = {   # state: (gloss top, gloss mid, bottom start, bottom end, highlight line, glyph)
+    "active":               ("#474747", "#383838", "#050505", "#121212", "#777777", "#ffffff"),
+    "hover":                ("#5c5c5c", "#4a4a4a", "#141414", "#242424", "#8a8a8a", "#ffffff"),
+    "pressed":              ("#202020", "#1a1a1a", "#000000", "#0a0a0a", "#3a3a3a", "#d8d8d8"),
+    "deactivated":          ("#3a3a3a", "#2e2e2e", "#050505", "#101010", "#555555", "#5a5a5a"),
+    "inactive":             ("#3c3c3c", "#2f2f2f", "#050505", "#101010", "#5e5e5e", "#b4b4b4"),
+    "hover-inactive":       ("#5c5c5c", "#4a4a4a", "#141414", "#242424", "#8a8a8a", "#ffffff"),
+    "pressed-inactive":     ("#202020", "#1a1a1a", "#000000", "#0a0a0a", "#3a3a3a", "#d8d8d8"),
+    "deactivated-inactive": ("#333333", "#2a2a2a", "#050505", "#0e0e0e", "#4a4a4a", "#484848"),
 }
 
 def glyph(kind, c):
@@ -120,16 +122,18 @@ def glyph(kind, c):
 
 def button(kind, extra_on=None):
     parts, x = [], 0
-    for st, (f1, f2, o, gc) in STATES.items():
+    for st, (t1, t2, b1, b2, hl, gc) in STATES.items():
         k = kind
         if extra_on and st.startswith("pressed"):
             k = extra_on
         parts.append(
-            f'<linearGradient id="g{x}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{f1}"/>'
-            f'<stop offset="1" stop-color="{f2}"/></linearGradient>'
+            f'<linearGradient id="g{x}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{t1}"/>'
+            f'<stop offset="0.5" stop-color="{t2}"/><stop offset="0.5" stop-color="{b1}"/>'
+            f'<stop offset="1" stop-color="{b2}"/></linearGradient>'
             f'<g id="{st}-center" transform="translate({x},0)">'
             f'<rect x="0" y="0" width="{BTN}" height="{BTN}" fill="none"/>'
-            f'<rect x="0.5" y="0.5" width="{BTN-1}" height="{BTN-1}" rx="2" fill="url(#g{x})" stroke="{o}"/>'
+            f'<rect x="0.5" y="0.5" width="{BTN-1}" height="{BTN-1}" rx="4" fill="url(#g{x})" stroke="#000000"/>'
+            f'<rect x="3" y="1" width="{BTN-6}" height="1" fill="{hl}"/>'
             f'{glyph(k, gc)}</g>')
         x += BTN + 2
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{x}" height="{BTN}" '
@@ -142,7 +146,7 @@ open(f"{OUT}/alldesktops.svg", "w").write(button("alldesktops", extra_on="alldes
 name = os.path.basename(os.path.abspath(OUT))
 open(f"{OUT}/metadata.desktop", "w").write(f"""[Desktop Entry]
 Name={name}
-Comment=Classic flat frame with square buttons, in black
+Comment=Classic frame in the black split gloss of the Firefox/Nemo Aero themes
 X-KDE-PluginInfo-Author=deck-aero
 X-KDE-PluginInfo-Name={name}
 X-KDE-PluginInfo-Version=1.0
@@ -150,8 +154,8 @@ X-KDE-PluginInfo-License=GPL_V2
 X-KDE-PluginInfo-EnabledByDefault=true
 """)
 open(f"{OUT}/{name}rc", "w").write(f"""[General]
-ActiveTextColor=235,235,235,255
-InactiveTextColor=150,150,150,255
+ActiveTextColor=255,255,255,255
+InactiveTextColor=160,160,160,255
 UseTextShadow=false
 Animation=120
 TitleAlignment=Left
