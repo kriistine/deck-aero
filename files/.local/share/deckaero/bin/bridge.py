@@ -24,14 +24,20 @@ SLOTS, WS_SLOTS = 12, 9
 SIG_TASKBAR, SIG_WS = 8, 9
 PX = 64          # rendered size; waybar scales to "size": 32 -> crisp on HiDPI too
 def _kde_icon_theme():
-    """The icon pack Plasma is using (kdeglobals [Icons] Theme), so the taskbar matches it."""
+    """The icon pack Plasma is using (kdeglobals [Icons] Theme), so the taskbar matches it.
+    Parsed by hand: KDE config files aren't always valid for GLib.KeyFile."""
+    path = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.join(HOME, ".config")), "kdeglobals")
+    group = None
     try:
-        kf = GLib.KeyFile()
-        kf.load_from_file(os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.join(HOME, ".config")), "kdeglobals"),
-                          GLib.KeyFileFlags.NONE)
-        return kf.get_string("Icons", "Theme")
-    except GLib.Error:
-        return "breeze"
+        for line in open(path, encoding="utf-8", errors="replace"):
+            line = line.strip()
+            if line.startswith("["):
+                group = line
+            elif group == "[Icons]" and line.split("=", 1)[0].strip() == "Theme":
+                return line.split("=", 1)[1].strip() or "breeze"
+    except OSError:
+        pass
+    return "breeze"
 
 
 ICON_THEME = _kde_icon_theme()
