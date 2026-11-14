@@ -21,7 +21,7 @@ It runs your **actual waybar, swaync and wofi configs** on the Deck's KDE deskto
 | GTK apps | diinki-aero theme, also forced onto Flatpak apps |
 | Icons / cursor | **keeps the Deck's own icon pack** (GTK apps, the launcher and taskbar follow it) / WoW cursors |
 | Terminal / files | kitty (same config, blurred) and Nemo, from the container |
-| Firefox | transparent Aero `userChrome.css` + prefs; Stylus site themes in `apps/firefox/stylus/` |
+| Firefox | transparent Aero `userChrome.css` + prefs (automatic); Stylus site themes in `apps/firefox/stylus/` (YouTube, Roblox, Instagram); Tampermonkey script in `apps/firefox/userscripts/` (Instagram DMs laid out like Discord) |
 | Discord | Dark Aero quickCSS (Vesktop or Vencord) |
 | Spotify | Spicetify DarkAero (optional, `--spotify`) |
 

@@ -177,5 +177,7 @@ cat <<EOF
   * 'Return to Gaming Mode' is in the launcher.
   * Stylus site themes: install Stylus in Firefox, then open the files in
       $REPO/apps/firefox/stylus/
+  * Instagram Discord-style chat: install Tampermonkey, then open
+      $REPO/apps/firefox/userscripts/instagram-discord-chat.user.js
   * Undo everything: $REPO/uninstall.sh
 EOF
