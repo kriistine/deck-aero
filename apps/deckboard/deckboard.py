@@ -81,25 +81,25 @@ STICKY = {K.KEY_LEFTCTRL, K.KEY_LEFTMETA, K.KEY_LEFTALT}
 SHIFTS = {K.KEY_LEFTSHIFT, K.KEY_RIGHTSHIFT}
 
 # ------------------------------------------------------------------ theme --
-# Matches the deck-aero taskbar (waybar style.css): Aero glass frame that is
-# grey gloss on the top half and cuts to black at the middle, glossy grey keys
-# like the bar's module boxes, and the bar's cyan (#20d0fc) active-button
-# gradient for hover / press.
-# (Previous charcoal + steel-blue theme is in deckboard.py.pre-taskbar-theme.bak.)
+# Same look as the rest of deck-aero:
+#  * title strip = the Classic-Black window title bar (split gloss: grey top half,
+#    hard cut to black, 1px highlight line), same as the Firefox tab strip / Nemo toolbar
+#  * body = plain black, like the window frame
+#  * keys = Nemo's toolbar buttons / the window buttons: 4px rounded, black outline,
+#    1px highlight, grey gloss top half cut to black, white bold labels
+#  * hover = the taskbar's cyan active-button gloss; lit (Shift/Caps/sticky) = cyan label + edge
 THEME = {
-    "opacity": 0.94,
-    "frame_top": "#404040", "frame_mid": "#242424",       # top half (glass sheen)
-    "frame_low": "#000000", "frame_bottom": "#000000",    # bottom half (hard cut)
-    "frame_split": 0.5,
-    "frame_border": "#000000", "frame_inner": "#4a4a4a",
-    "title_text": "#ffffff", "title_h": 18, "border": 6,
-    "text": "#dcdcdc", "text_dim": "#9a9a9a",
-    "sheen": 0.0,          # the split gradient already provides the sheen
-    "key_highlight": 0.32, # bright top edge, like the bar's rgba(255,255,255,.45) border
-    # key states: (upper gloss top, upper gloss bottom, lower top, lower bottom, border)
-    "normal": ("#5e5e5e", "#3c3c3c", "#1e1e1e", "#0a0a0a", "#000000"),
-    "hover":  ("#00a8a8", "#08807f", "#05474a", "#021a1c", "#20d0fc"),
-    "lit":    ("#20d0fc", "#19a9cc", "#0c6b82", "#06414f", "#a8f0ff"),
+    "opacity": 1.0,
+    "accent": "#20d0fc",
+    "body": "#0a0a0a",
+    "title_gloss": [(0, "#373737"), (0.5, "#262626"), (0.5, "#030303"), (1, "#0f0f0f")],
+    "title_highlight": "#535353", "frame_outer": "#000000", "frame_inner": "#262626",
+    "title_text": "#ffffff", "help_text": "#a0a0a0",
+    "text": "#ffffff", "text_lit": "#20d0fc",
+    # key states: (gloss top, gloss mid, lower top, lower bottom, highlight line, outline)
+    "normal": ("#474747", "#383838", "#050505", "#121212", "#777777", "#000000"),
+    "hover":  ("#2fc8d8", "#1a9aa8", "#06535c", "#032e35", "#a6f3ff", "#20d0fc"),
+    "lit":    ("#474747", "#383838", "#050505", "#121212", "#777777", "#20d0fc"),
     "cursor": "#e8eef3",
 }
 
@@ -141,36 +141,52 @@ def make_cursor_png(size, ring_w, centre_d, color, opacity=1.0):
     return base64.b64encode(png)
 
 
-def make_key_image(w, h, state, radius=3):
-    """Glossy rounded key as a PhotoImage (corners transparent)."""
-    ut, ub, lt, lb, border = (_hex(c) for c in THEME[state])
-    white = _hex("#ffffff")
-    img = tk.PhotoImage(width=w, height=h)
-    half = h * 0.48
+def make_key_image(w, h, state, radius=4):
+    """Glossy rounded key (Nemo / window-button style) as a PhotoImage.
+
+    Corners are anti-aliased against the keyboard body colour, so no transparency is needed."""
+    t1, t2, b1, b2, hl, ol = (_hex(c) for c in THEME[state])
+    bg = _hex(THEME["body"])
+
+    def mix(a, b, t):
+        return tuple(x + (y - x) * t for x, y in zip(a, b))
+
+    def cover(x, y, inset):
+        """Fraction of pixel (x, y) inside the rounded rect shrunk by `inset` (3x3 supersampled)."""
+        r = max(0.5, radius - inset)
+        x0, y0, x1, y1 = inset, inset, w - inset, h - inset
+        n = 0
+        for sy in (0.17, 0.5, 0.83):
+            for sx in (0.17, 0.5, 0.83):
+                px, py = x + sx, y + sy
+                if not (x0 <= px <= x1 and y0 <= py <= y1):
+                    continue
+                cx = min(max(px, x0 + r), x1 - r)
+                cy = min(max(py, y0 + r), y1 - r)
+                if (px - cx) ** 2 + (py - cy) ** 2 <= r * r:
+                    n += 1
+        return n / 9
+
+    half = h / 2
     rows = []
     for y in range(h):
-        if y < half:
-            c = _mix(ut, ub, y / max(1, half))
+        if y == 1:
+            fill = hl                                   # 1px highlight line
+        elif y < half:
+            fill = mix(t1, t2, y / max(1, half - 1))     # grey gloss
         else:
-            c = _mix(lt, lb, (y - half) / max(1, h - half))
+            fill = mix(b1, b2, (y - half) / max(1, h - half - 1))   # hard cut to black
         row = []
         for x in range(w):
-            if x == 0 or y == 0 or x == w - 1 or y == h - 1:
-                row.append("#%02x%02x%02x" % border)
-            elif y == 1 or x == 1:
-                row.append(_mix(_hex(c), white, THEME.get("key_highlight", 0.6)))
+            if x <= radius or x >= w - radius - 1 or y <= radius or y >= h - radius - 1:
+                co, ci = cover(x, y, 0), cover(x, y, 1)
             else:
-                row.append(c)
+                co = ci = 1.0
+            c = mix(mix(bg, ol, co), fill, ci)
+            row.append("#%02x%02x%02x" % tuple(int(round(v)) for v in c))
         rows.append("{" + " ".join(row) + "}")
+    img = tk.PhotoImage(width=w, height=h)
     img.put(" ".join(rows))
-    # round the corners
-    for cx, cy in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)):
-        for dy in range(radius):
-            for dx in range(radius):
-                if dx + dy < radius - 1:
-                    x = cx + dx if cx == 0 else cx - dx
-                    y = cy + dy if cy == 0 else cy - dy
-                    img.transparency_set(x, y, True)
     return img
 
 
@@ -298,12 +314,13 @@ class Deckboard:
         self.kh = BASE_ROW * s
         self.W = int(self.kw * ROW_UNITS)
         self.H = int(self.kh * 5)
-        self.font = ("Noto Sans", max(7, int(14 * s)))
-        self.font_small = ("Noto Sans", max(6, int(11 * s)))
+        # bold labels, like the waybar modules
+        self.font = ("Noto Sans", max(10, int(17 * s)), "bold")
+        self.font_small = ("Noto Sans", max(8, int(13 * s)), "bold")
 
         T = THEME
-        b, th = T["border"], T["title_h"]
-        self.ox, self.oy = b, th           # key area origin inside the window
+        b, th = 4, max(22, int(30 * s))          # 4px frame like the window borders
+        self.ox, self.oy = b, th
         self.WW, self.WH = self.W + 2 * b, self.H + th + b
 
         self.root = tk.Tk()
@@ -311,7 +328,7 @@ class Deckboard:
         self.root.overrideredirect(True)        # no focus steal, no title bar
         self.root.attributes("-topmost", True)
         try:
-            self.root.attributes("-alpha", cfg.get("opacity", 0.85))
+            self.root.attributes("-alpha", cfg.get("opacity", 1.0))
         except tk.TclError:
             pass
         self.sw, self.sh = self.root.winfo_screenwidth(), self.root.winfo_screenheight()
@@ -324,37 +341,37 @@ class Deckboard:
         self.move_held = 0.0                          # seconds a D-pad direction is held
         self.root.geometry(f"{self.WW}x{self.WH}+{self.pos[0]}+{self.pos[1]}")
         self.cv = tk.Canvas(self.root, width=self.WW, height=self.WH,
-                            bg=T["frame_bottom"], highlightthickness=0)
+                            bg=T["body"], highlightthickness=0)
         self.cv.pack()
 
-        # frosted frame: vertical gradient + double border + title strip
-        top, bot = _hex(T["frame_top"]), _hex(T["frame_bottom"])
-        mid, low = _hex(T.get("frame_mid", T["frame_top"])), _hex(T.get("frame_low", T["frame_bottom"]))
-        split = int(self.WH * T.get("frame_split", 1.0))
-        for yy in range(self.WH):
-            if yy < split:
-                c = _mix(top, mid, yy / max(1, split))
-            else:
-                c = _mix(low, bot, (yy - split) / max(1, self.WH - split))
+        # title strip: the window title bar's split gloss
+        stops = T["title_gloss"]
+        for yy in range(1, th):
+            f = (yy - 1) / max(1, th - 2)
+            c = stops[-1][1]
+            for (o0, c0), (o1, c1) in zip(stops, stops[1:]):
+                if o0 <= f < o1:
+                    c = _mix(_hex(c0), _hex(c1), (f - o0) / (o1 - o0))
+                    break
             self.cv.create_line(0, yy, self.WW, yy, fill=c)
-        gloss = _hex("#ffffff")
-        for yy in range(th):   # extra sheen on the title strip
-            self.cv.create_line(1, yy, self.WW - 1, yy,
-                                fill=_mix(top, gloss, T.get("sheen", 1.0) * (1 - yy / th)),
-                                stipple="gray50")
-        self.cv.create_rectangle(0, 0, self.WW - 1, self.WH - 1, outline=T["frame_border"])
-        self.cv.create_rectangle(1, 1, self.WW - 2, self.WH - 2, outline=T["frame_inner"])
-        self.cv.create_text(b + 4, th / 2 + 1, text="Deckboard", anchor="w",
-                            fill=T["title_text"], font=("Noto Sans", max(7, int(10 * s))))
-        self.cv.create_text(self.WW - b - 4, th / 2 + 1, anchor="e",
-                            text="X  hide    B  ⌫    Y  reset    R2  enter    L2  shift    D-pad  move",
-                            fill=T["text_dim"], font=("Noto Sans", max(6, int(8 * s))))
+        self.cv.create_line(0, 1, self.WW, 1, fill=T["title_highlight"])
+        self.cv.create_line(0, th - 1, self.WW, th - 1, fill=T["frame_outer"])
+        # frame: black outline + 1px inner line, as on the window borders
+        self.cv.create_rectangle(0, 0, self.WW - 1, self.WH - 1, outline=T["frame_outer"])
+        self.cv.create_line(1, th, 1, self.WH - 1, fill=T["frame_inner"])
+        self.cv.create_line(self.WW - 2, th, self.WW - 2, self.WH - 1, fill=T["frame_inner"])
+        self.cv.create_line(1, self.WH - 2, self.WW - 1, self.WH - 2, fill=T["frame_inner"])
+        self.cv.create_text(b + 6, th / 2, text="Deckboard", anchor="w",
+                            fill=T["title_text"], font=("Noto Sans", max(9, int(14 * s)), "bold"))
+        self.cv.create_text(self.WW - b - 6, th / 2, anchor="e",
+                            text="X hide   B ⌫   Y reset   R2 enter   L2 shift   D-pad move",
+                            fill=T["help_text"], font=("Noto Sans", max(8, int(12 * s)), "bold"))
 
         # key images, cached per (w, h, state)
         self._img_cache = {}
         self.keys = []   # (x0, y0, x1, y1, keydef, img_id, text_id) in key-area coords
         self.key_state = {}
-        gap = max(1, int(2.5 * s))
+        gap = max(2, int(4 * s))               # Nemo-style spacing between buttons
         for r, row in enumerate(ROWS):
             xk = 0.0
             for kd in row:
@@ -590,6 +607,7 @@ class Deckboard:
             old_state, old_label, size = self.key_state[iid]
             if state != old_state:
                 self.cv.itemconfigure(iid, image=self.key_img(size[0], size[1], state))
+                self.cv.itemconfigure(tid, fill=THEME["text_lit"] if state == "lit" else THEME["text"])
             if label != old_label:
                 self.cv.itemconfigure(tid, text=label)
             self.key_state[iid] = (state, label, size)

@@ -58,7 +58,13 @@ Any key left out uses the default in `deckboard.py`. The included file holds the
 
 ## Look
 
-The colours live in the `THEME` dict near the top of `deckboard.py`: an Aero glass frame (grey gloss on the top half, black below), glossy grey keys, and the taskbar's cyan (`#20d0fc`) for hover and press.
+The colours live in the `THEME` dict near the top of `deckboard.py`, and they match the rest of deck-aero:
+
+- **Title strip:** the same split gloss as the Classic-Black window title bars, the Firefox tab strip and the Nemo toolbar.
+- **Body:** plain black with the window borders' 1px frame lines.
+- **Keys:** copies of Nemo's toolbar buttons (and the window buttons): rounded, black outline, a 1px highlight, a grey gloss top half with a hard cut to black, and bold white labels.
+- **Hover:** the taskbar's cyan (`#20d0fc`) active-button gloss.
+- **Lit keys** (Shift, Caps, sticky Ctrl/Alt/Super): cyan label and cyan edge.
 
 ## Notes
 
